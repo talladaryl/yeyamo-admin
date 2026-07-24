@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fafafa;
+  --foreground: #111827;
+  --surface: #ffffff;
+  --surface-muted: #fcfcfd;
+  --surface-subtle: #f6f7f9;
+  --border: #eaecf0;
+  --border-strong: #d0d5dd;
+  --danger: #b42318;
+  --danger-strong: #8f0013;
+  --success: #0f766e;
+  --warning: #b45309;
+  --ink-soft: #475467;
+  --muted: #667085;
+  --sidebar: #ffffff;
+  --sidebar-elevated: #ffffff;
+  --sidebar-border: #eaecf0;
+  --accent: #e30613;
+  --accent-soft: rgba(227, 6, 19, 0.08);
+  --shadow-soft: 0 8px 24px rgba(16, 24, 40, 0.05);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--background);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #ffffff 0%, var(--background) 100%);
+  color: var(--foreground);
+  font-family: Inter, Arial, Helvetica, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+}
+
+.admin-panel {
+  border: 1px solid var(--border);
+  background: #ffffff;
+  box-shadow: var(--shadow-soft);
+}
+
+.admin-shell-grid {
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: 232px minmax(0, 1fr);
+}
+
+.admin-sidebar {
+  background: #ffffff;
+  border-right: 1px solid var(--sidebar-border);
+}
+
+.admin-subtle-label {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.admin-divider {
+  border-color: rgba(193, 204, 216, 0.65);
+}
+
+.admin-table-row:hover {
+  background: rgba(248, 250, 252, 0.9);
+}

@@ -1,4 +1,5 @@
 import type {
+  AdminDashboardData,
   AuditLog,
   CatalogAsset,
   DashboardData,
@@ -20,6 +21,143 @@ export const mockDashboard: DashboardData = {
     { placeId: "p-01", placeName: "Lac Rose de Kribi", score: 94, views: 1830, saves: 414, regionName: "Sud" },
     { placeId: "p-02", placeName: "Chefferie de Bafut", score: 91, views: 1540, saves: 322, regionName: "Nord-Ouest" },
     { placeId: "p-03", placeName: "Mont Cameroun", score: 88, views: 1492, saves: 276, regionName: "Sud-Ouest" }
+  ]
+};
+
+export const mockAdminDashboard: AdminDashboardData = {
+  kpis: [
+    {
+      label: "Utilisateurs totaux",
+      value: "128,450",
+      change: "+12.5%",
+      positive: true,
+      icon: "users",
+      sparkline: [18, 21, 20, 24, 26, 28, 31]
+    },
+    {
+      label: "Lieux répertoriés",
+      value: "8,736",
+      change: "+15.3%",
+      positive: true,
+      icon: "place",
+      sparkline: [14, 15, 17, 18, 19, 21, 23]
+    },
+    {
+      label: "Événements",
+      value: "3,245",
+      change: "+8.2%",
+      positive: true,
+      icon: "calendar",
+      sparkline: [9, 11, 10, 12, 12, 13, 14]
+    },
+    {
+      label: "Réservations",
+      value: "1,254",
+      change: "+10.7%",
+      positive: true,
+      icon: "ticket",
+      sparkline: [7, 8, 8, 9, 10, 11, 12]
+    },
+    {
+      label: "Avis publiés",
+      value: "12,389",
+      change: "+9.1%",
+      positive: true,
+      icon: "star",
+      sparkline: [11, 11, 12, 13, 13, 14, 15]
+    }
+  ],
+  evolution: [
+    { day: "Lun", value: 6500 },
+    { day: "Mar", value: 7200 },
+    { day: "Mer", value: 6800 },
+    { day: "Jeu", value: 11000 },
+    { day: "Ven", value: 10000 },
+    { day: "Sam", value: 14000 },
+    { day: "Dim", value: 18500 }
+  ],
+  roles: [
+    { label: "Utilisateurs", value: 76.4, color: "#E30613" },
+    { label: "Partenaires", value: 12.6, color: "#2563EB" },
+    { label: "Modérateurs", value: 7.8, color: "#D1D5DB" },
+    { label: "Administrateurs", value: 3.2, color: "#111827" }
+  ],
+  activities: [
+    {
+      title: "Nouveau lieu ajouté",
+      description: "Mont Cameroun",
+      time: "Il y a 2 min",
+      icon: "map-pin",
+      tone: "success"
+    },
+    {
+      title: "Nouvelle réservation",
+      description: "Parc national de Waza",
+      time: "Il y a 5 min",
+      icon: "ticket",
+      tone: "warning"
+    },
+    {
+      title: "Avis publié",
+      description: "Kribi - Plage de Grand Batanga",
+      time: "Il y a 8 min",
+      icon: "star",
+      tone: "info"
+    },
+    {
+      title: "Signalement reçu",
+      description: "Contenu inapproprié",
+      time: "Il y a 12 min",
+      icon: "flag",
+      tone: "danger"
+    },
+    {
+      title: "Nouveau partenaire",
+      description: "Hôtel La Falaise",
+      time: "Il y a 15 min",
+      icon: "partner",
+      tone: "info"
+    }
+  ],
+  reports: [
+    { label: "Contenu inapproprié", count: 12 },
+    { label: "Fausse information", count: 7 },
+    { label: "Spam", count: 14 },
+    { label: "Lieu inapproprié", count: 5 },
+    { label: "Utilisateur signalé", count: 3 }
+  ],
+  events: [
+    {
+      title: "Festival des cultures",
+      place: "Yaoundé",
+      date: "15 Juin 2024",
+      badge: "À venir"
+    },
+    {
+      title: "Randonnée Mont Cameroun",
+      place: "Buéa",
+      date: "22 Juin 2024",
+      badge: "À venir"
+    },
+    {
+      title: "Fête de la musique",
+      place: "Douala",
+      date: "21 Juin 2024",
+      badge: "À venir"
+    },
+    {
+      title: "Salon du tourisme",
+      place: "Yaoundé",
+      date: "05 Juillet 2024",
+      badge: "À venir"
+    }
+  ],
+  places: [
+    { name: "Mont Cameroun", region: "Sud-Ouest", rating: 4.8, imageLabel: "MC" },
+    { name: "Kribi", region: "Sud", rating: 4.6, imageLabel: "KB" },
+    { name: "Parc national de Waza", region: "Extrême-Nord", rating: 4.7, imageLabel: "WZ" },
+    { name: "Foumban", region: "Ouest", rating: 4.5, imageLabel: "FB" },
+    { name: "Limbe", region: "Sud-Ouest", rating: 4.4, imageLabel: "LB" }
   ]
 };
 

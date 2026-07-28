@@ -203,7 +203,7 @@ export default function Home() {
           ))}
         </nav>
 
-        <a className="topbar__cta" href="#dashboard-preview">
+        <a className="topbar__cta" href="/admin">
           <ShieldCheck aria-hidden="true" size={18} strokeWidth={2.1} />
           <span>Accéder au dashboard</span>
         </a>

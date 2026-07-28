@@ -95,6 +95,84 @@ export type DashboardData = {
   popularPlaces: PopularPlace[];
 };
 
+export type AdminMetricIcon =
+  | "users"
+  | "place"
+  | "calendar"
+  | "ticket"
+  | "star"
+  | "message"
+  | "document"
+  | "alert"
+  | "partner"
+  | "mail"
+  | "chart"
+  | "settings";
+
+export type AdminFeedIcon =
+  | "map-pin"
+  | "ticket"
+  | "star"
+  | "flag"
+  | "partner";
+
+export type AdminKpiMetric = {
+  label: string;
+  value: string;
+  change: string;
+  positive: boolean;
+  icon: AdminMetricIcon;
+  sparkline: number[];
+};
+
+export type AdminChartPoint = {
+  day: string;
+  value: number;
+};
+
+export type AdminRoleSlice = {
+  label: string;
+  value: number;
+  color: string;
+};
+
+export type AdminActivityItem = {
+  title: string;
+  description: string;
+  time: string;
+  icon: AdminFeedIcon;
+  tone: "success" | "warning" | "danger" | "info";
+};
+
+export type AdminReportBucket = {
+  label: string;
+  count: number;
+};
+
+export type AdminEventItem = {
+  title: string;
+  place: string;
+  date: string;
+  badge: string;
+};
+
+export type AdminPlaceItem = {
+  name: string;
+  region: string;
+  rating: number;
+  imageLabel: string;
+};
+
+export type AdminDashboardData = {
+  kpis: AdminKpiMetric[];
+  evolution: AdminChartPoint[];
+  roles: AdminRoleSlice[];
+  activities: AdminActivityItem[];
+  reports: AdminReportBucket[];
+  events: AdminEventItem[];
+  places: AdminPlaceItem[];
+};
+
 export type CatalogAsset = {
   id: string;
   title: string;

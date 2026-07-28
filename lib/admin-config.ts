@@ -12,10 +12,16 @@ export type AdminModule = {
     | "catalog"
     | "culture"
     | "places"
+    | "calendar"
+    | "reservations"
+    | "reviews"
     | "moderation"
     | "trust"
     | "gamification"
     | "campaigns"
+    | "alert"
+    | "message"
+    | "mail"
     | "search"
     | "analytics"
     | "settings";
@@ -23,6 +29,7 @@ export type AdminModule = {
   summary: string;
   highlights: string[];
   primaryAction: string;
+  showInSidebar?: boolean;
 };
 
 export const currentAdminRole: AdminRole = "SUPER_ADMIN";
@@ -47,6 +54,46 @@ export const adminNavigation: AdminModule[] = [
     summary: "Gestion des comptes, statuts, activite, confidentialite et workflows de suspension.",
     highlights: ["Recherche avancee", "Statuts compte", "Activity timeline", "Exports et retention"],
     primaryAction: "Lancer une bulk action"
+  },
+  {
+    label: "Lieux",
+    href: "/admin/places",
+    roles: ["SUPER_ADMIN", "ADMIN", "MODERATOR", "EDITOR"],
+    domain: "operations",
+    icon: "places",
+    summary: "Pilotage des lieux, expériences et validations de contenus géolocalisés.",
+    highlights: ["Fiches lieux", "Mise à jour", "Visibilité", "Scores qualité"],
+    primaryAction: "Ajouter un lieu"
+  },
+  {
+    label: "Événements",
+    href: "/admin/events",
+    roles: ["SUPER_ADMIN", "ADMIN", "EDITOR"],
+    domain: "operations",
+    icon: "calendar",
+    summary: "Gestion des événements, campagnes locales et contenus à venir.",
+    highlights: ["Calendrier", "Programmation", "Statuts", "Promotion"],
+    primaryAction: "Publier un événement"
+  },
+  {
+    label: "Réservations",
+    href: "/admin/reservations",
+    roles: ["SUPER_ADMIN", "ADMIN", "SUPPORT"],
+    domain: "operations",
+    icon: "reservations",
+    summary: "Suivi des réservations, confirmations et litiges potentiels.",
+    highlights: ["Suivi temps réel", "Paiements", "Statut", "Support"],
+    primaryAction: "Voir les réservations"
+  },
+  {
+    label: "Avis & Commentaires",
+    href: "/admin/reviews",
+    roles: ["SUPER_ADMIN", "ADMIN", "MODERATOR"],
+    domain: "operations",
+    icon: "reviews",
+    summary: "Modération des avis, commentaires et signalements associés.",
+    highlights: ["Avis publiés", "Modération", "Réponses", "Signalement"],
+    primaryAction: "Ouvrir la modération"
   },
   {
     label: "Partenaires",
@@ -85,6 +132,7 @@ export const adminNavigation: AdminModule[] = [
     roles: ["SUPER_ADMIN", "ADMIN", "MODERATOR", "EDITOR"],
     domain: "operations",
     icon: "places",
+    showInSidebar: false,
     summary: "Validation des lieux, evenements, experiences et revue geographique.",
     highlights: ["Map review", "Disponibilite", "Corrections", "Statuts"],
     primaryAction: "Ouvrir la carte de revue"
@@ -99,6 +147,16 @@ export const adminNavigation: AdminModule[] = [
     summary: "Revue des posts, commentaires, stories, medias signales et decisions sensibles.",
     highlights: ["Reports", "Preview media", "Escalades", "Historique de moderation"],
     primaryAction: "Traiter les reports"
+  },
+  {
+    label: "Signalements",
+    href: "/admin/moderation",
+    roles: ["SUPER_ADMIN", "ADMIN", "MODERATOR", "SUPPORT"],
+    domain: "operations",
+    icon: "alert",
+    summary: "Gestion des signalements, priorisation et suivi des dossiers sensibles.",
+    highlights: ["Files prioritaires", "Escalades", "Résolutions", "Historique"],
+    primaryAction: "Voir les signalements"
   },
   {
     label: "Trust & Safety",
@@ -131,6 +189,26 @@ export const adminNavigation: AdminModule[] = [
     primaryAction: "Creer une campagne"
   },
   {
+    label: "Messages",
+    href: "/admin/messages",
+    roles: ["SUPER_ADMIN", "ADMIN", "SUPPORT"],
+    domain: "growth",
+    icon: "message",
+    summary: "Messages entrants, réponses rapides et suivi des conversations.",
+    highlights: ["Boîte de réception", "Assignation", "Macros", "SLA"],
+    primaryAction: "Ouvrir la messagerie"
+  },
+  {
+    label: "Newsletter",
+    href: "/admin/newsletter",
+    roles: ["SUPER_ADMIN", "ADMIN", "COMMERCIAL"],
+    domain: "growth",
+    icon: "mail",
+    summary: "Campagnes email, segments et suivi des envois.",
+    highlights: ["Segments", "Envois", "Ouvertures", "Clics"],
+    primaryAction: "Créer une newsletter"
+  },
+  {
     label: "Search & Discovery",
     href: "/admin/search-discovery",
     roles: ["SUPER_ADMIN", "ADMIN"],
@@ -141,7 +219,7 @@ export const adminNavigation: AdminModule[] = [
     primaryAction: "Modifier une policy"
   },
   {
-    label: "Analytics",
+    label: "Analytique",
     href: "/admin/analytics",
     roles: ["SUPER_ADMIN", "ADMIN", "COMMERCIAL"],
     domain: "growth",

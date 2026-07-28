@@ -1,10 +1,8 @@
-import type { Route } from "next";
-
 import type { AdminRole } from "@/lib/types";
 
 export type AdminModule = {
   label: string;
-  href: Route;
+  href: string;
   roles: AdminRole[];
   domain: "core" | "operations" | "growth" | "governance";
   icon:

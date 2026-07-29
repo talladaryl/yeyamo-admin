@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import type { Route } from "next";
 import { usePathname } from "next/navigation";
 import {
   Building2,
@@ -81,7 +82,7 @@ export function Sidebar({
             return (
               <Link
                 key={`${module.href}-${module.label}-${index}`}
-                href={module.href as any}
+                href={module.href as Route}
                 className={cn("admin-sidebar__link", active && "is-active")}
                 onClick={onClose}
               >

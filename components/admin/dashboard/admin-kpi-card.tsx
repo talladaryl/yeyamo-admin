@@ -2,7 +2,6 @@ import { MoreVertical, type LucideIcon } from "lucide-react";
 
 import { AdminIconBox } from "@/components/admin/ui/admin-icon-box";
 import { AdminStatTrend } from "@/components/admin/ui/admin-stat-trend";
-import { cn } from "@/lib/utils";
 
 function sparklinePath(values: number[]) {
   const width = 96;

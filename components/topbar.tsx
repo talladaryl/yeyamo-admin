@@ -13,12 +13,12 @@ function getTopbarCopy(pathname: string) {
     };
   }
 
-  const module = getModuleByHref(pathname);
+  const adminModule = getModuleByHref(pathname);
 
-  if (module) {
+  if (adminModule) {
     return {
-      title: module.label,
-      subtitle: module.summary
+      title: adminModule.label,
+      subtitle: adminModule.summary
     };
   }
 

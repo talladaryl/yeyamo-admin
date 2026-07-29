@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { Route } from "next";
 import { ArrowRight, Sparkles } from "lucide-react";
 
 import { adminNavigation, type AdminModule } from "@/lib/admin-config";
@@ -35,14 +36,14 @@ export function ModulePage({ module }: { module: AdminModule }) {
       <div className="admin-module__grid">
         <section className="admin-section-card">
           <div className="admin-section-card__head">
-            <h3 className="admin-section-card__title">Vue d'ensemble</h3>
-            <Link href={module.href as any} className="admin-section-card__link">
+            <h3 className="admin-section-card__title">Vue d&apos;ensemble</h3>
+            <Link href={module.href as Route} className="admin-section-card__link">
               Actualiser
             </Link>
           </div>
           <p className="admin-section-card__text">
-            Cette page reprend la logique visuelle de l'administration YeYamo avec des composants
-            composés, des métriques et des actions liées à la route courante.
+            Cette page reprend la logique visuelle de l&apos;administration YeYamo avec des
+            composants composés, des métriques et des actions liées à la route courante.
           </p>
         </section>
 
@@ -55,7 +56,7 @@ export function ModulePage({ module }: { module: AdminModule }) {
           </div>
           <div className="admin-module__related">
             {related.slice(0, 4).map((entry) => (
-              <Link key={entry.href} href={entry.href as any} className="admin-module__related-link">
+              <Link key={entry.href} href={entry.href as Route} className="admin-module__related-link">
                 <span>{entry.label}</span>
                 <ArrowRight size={16} aria-hidden="true" />
               </Link>

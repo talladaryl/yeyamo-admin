@@ -14,7 +14,7 @@ export function setSessionCookies(response: NextResponse, auth: AuthResponse) {
   const secure = process.env.NODE_ENV === "production";
   response.cookies.set(ACCESS_COOKIE, auth.accessToken, { httpOnly: true, secure, sameSite: "lax", path: "/", maxAge: auth.expiresIn });
   response.cookies.set(REFRESH_COOKIE, auth.refreshToken, { httpOnly: true, secure, sameSite: "strict", path: "/", maxAge: 60 * 60 * 24 * 30 });
-  response.cookies.set(USER_COOKIE, JSON.stringify({ id: auth.user.id, email: auth.user.email, roles: auth.user.roles, permissions: [], scopes: [] }), { httpOnly: true, secure, sameSite: "lax", path: "/", maxAge: 60 * 60 * 24 * 30 });
+  response.cookies.set(USER_COOKIE, JSON.stringify({ id: auth.user.id, email: auth.user.email, roles: auth.user.roles, permissions: auth.user.permissions, scopes: auth.user.scopes }), { httpOnly: true, secure, sameSite: "lax", path: "/", maxAge: 60 * 60 * 24 * 30 });
 }
 
 export function clearSessionCookies(response: NextResponse) {

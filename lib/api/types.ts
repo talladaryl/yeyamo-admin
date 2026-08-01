@@ -6,6 +6,8 @@ export type AuthUser = {
   phone: string | null;
   status: string;
   roles: string[];
+  permissions: string[];
+  scopes: string[];
 };
 
 export type AuthResponse = {

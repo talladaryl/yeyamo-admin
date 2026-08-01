@@ -202,7 +202,7 @@ export const adminNavigation: AdminModule[] = [
   },
   {
     label: "Signalements",
-    href: "/admin/moderation",
+    href: "/admin/reports",
     roles: ["SUPER_ADMIN", "ADMIN", "MODERATOR", "SUPPORT"],
     domain: "operations",
     icon: "alert",

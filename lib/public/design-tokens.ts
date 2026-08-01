@@ -1,23 +1,29 @@
 export const publicDesignTokens = {
   colors: {
-    primary: "#E30613",
-    primaryDark: "#B60410",
-    primarySoft: "#FFF1F2",
+    primary: "#E50914",
+    primaryDark: "#B80612",
+    primarySoft: "#FFF1F3",
     background: "#FFFFFF",
-    backgroundMuted: "#FAFAFA",
-    text: "#171717",
-    textMuted: "#667085",
-    border: "#E5E7EB"
+    surface: "#FFFFFF",
+    surfaceWarm: "#FFF7F5",
+    surfaceSoft: "#FFF8F9",
+    surfaceMuted: "#F6F7F9",
+    surfaceNavy: "#0B1633",
+    surfaceNavy2: "#131F42",
+    text: "#101827",
+    textMuted: "#5B6474",
+    border: "rgba(16, 24, 40, 0.08)",
+    borderHairline: "#E4E7EC"
   },
   radius: {
     sm: "12px",
     md: "16px",
     lg: "20px",
-    xl: "28px",
+    xl: "32px",
     pill: "999px"
   },
   layout: {
-    container: "1440px",
+    container: "1400px",
     sectionPaddingY: "clamp(4rem, 8vw, 7rem)",
     sectionGap: "clamp(1.5rem, 3vw, 2.5rem)",
     contentWidth: "72rem"

@@ -1,0 +1,1 @@
+import{CatalogAssetDetail}from"@/features/catalog/components/catalog-asset-detail";export default async function Page({params}:{params:Promise<{id:string}>}){return <CatalogAssetDetail id={(await params).id} base="/admin/places"/>}

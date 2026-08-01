@@ -1,0 +1,1 @@
+import{GamificationUnavailable}from"@/features/gamification/components/gamification";export default function Page(){return <GamificationUnavailable title="Analytics Gamification" description="Aucun endpoint administrateur n’expose missions complétées, XP distribués, utilisateurs actifs, rewards réclamés ou top missions."/>}

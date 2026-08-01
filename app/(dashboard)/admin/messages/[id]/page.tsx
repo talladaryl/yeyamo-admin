@@ -1,0 +1,1 @@
+import{SupportDesk}from"@/features/support/components/support-desk";export default async function Page({params}:{params:Promise<{id:string}>}){return <SupportDesk conversationId={(await params).id}/>}

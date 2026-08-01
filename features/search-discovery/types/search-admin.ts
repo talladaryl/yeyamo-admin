@@ -1,0 +1,1 @@
+export type SearchIndex={name:string;documentCount:number;health:string;sizeBytes:number;lastUpdatedAt:string};export type SynonymSet={id:string;terms:string[];status:string};export type RankingPolicy={id:string;name:string;configuration:Record<string,unknown>;status:string};export type ZeroResultQuery={query:string;count:number;period:string;region?:string};

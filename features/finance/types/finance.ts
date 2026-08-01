@@ -1,0 +1,11 @@
+export type Payment={id:string;bookingId:string;sagaId:string;userId:string;amount:number;currency:string;status:string;provider:string;providerPaymentId?:string|null;failureReason?:string|null;createdAt:string;updatedAt:string};
+export type Refund={id:string;paymentId:string;amount:number;status:string;providerRefundId?:string|null;failureReason?:string|null;createdAt:string;updatedAt:string};
+export type Page<T>={content:T[];totalElements:number;totalPages:number;number:number;size:number};
+export type ProductType="TICKET_ORDER"|"BOOKING_ORDER"|"CAMPAIGN_CREDIT_ORDER"|"EXPERIENCE_ORDER"|"PARTNER_SUBSCRIPTION";
+export type Promotion={id:string;partnerId?:string|null;code:string;name:string;description?:string|null;discountType:"PERCENTAGE"|"FIXED_AMOUNT"|"FREE_SERVICE_FEE";discountValue:number;maximumDiscount?:number|null;minimumOrderAmount:number;usageLimit?:number|null;usageLimitPerUser?:number|null;usageCount:number;startsAt:string;endsAt:string;applicableProductTypes:string;applicableEntityIds:string;status:"DRAFT"|"ACTIVE"|"INACTIVE"|"EXPIRED";createdAt:string;updatedAt:string};
+export type PromotionInput={partnerId?:string;code:string;name:string;description?:string;discountType:Promotion["discountType"];discountValue:number;maximumDiscount?:number;minimumOrderAmount:number;usageLimit?:number;usageLimitPerUser?:number;startsAt:string;endsAt:string;applicableProductTypes:ProductType[];applicableEntityIds:string[]};
+export type CommissionInput={partnerId?:string;productType:ProductType;percentage:number;fixedAmount:number;maximumAmount?:number;currency:string;ruleVersion:number;effectiveFrom:string;effectiveUntil?:string};
+export type Commission=CommissionInput&{id:string;status:string;createdAt:string};
+export type LedgerType="SALE_CREDIT"|"PLATFORM_COMMISSION"|"REFUND_DEBIT"|"ADJUSTMENT"|"PAYOUT"|"CHARGEBACK";
+export type LedgerEntry={id:string;partnerId:string;orderId?:string|null;transactionType:LedgerType;amount:number;currency:string;reference:string;idempotencyKey:string;occurredAt:string;createdBy:string;reason:string};
+export type Balance={partnerId:string;currency:string;balance:number};

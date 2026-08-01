@@ -1,0 +1,1 @@
+import { Suspense } from "react"; import { ReservationsPage } from "@/features/reservations/components/reservations-page"; import { AdminSkeleton } from "@/components/admin/ui/admin-foundation"; export default function Page(){return <Suspense fallback={<AdminSkeleton/>}><ReservationsPage/></Suspense>}

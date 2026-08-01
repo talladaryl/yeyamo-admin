@@ -99,3 +99,6 @@
   color: #e30613;
   font-weight: 700;
 }
+
+.admin-login__error { margin: 0; color: #b42318; font-size: .9rem; }
+.admin-login__submit:disabled { opacity: .65; cursor: wait; }

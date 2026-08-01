@@ -1,0 +1,1 @@
+import{Suspense}from"react";import{CatalogAssetsPage}from"@/features/catalog/components/catalog-assets-page";import{AdminSkeleton}from"@/components/admin/ui/admin-foundation";export default function Page(){return <Suspense fallback={<AdminSkeleton/>}><CatalogAssetsPage type="PLACE" title="Lieux" base="/admin/places"/></Suspense>}

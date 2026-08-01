@@ -1,0 +1,1 @@
+import{SettingsUnavailable}from"@/features/settings/components/settings";export default function Page(){return <SettingsUnavailable title="Paramètres généraux" description="Aucun endpoint n’expose nom plateforme, maintenance mode, configuration fonctionnelle ou limites système."/>}

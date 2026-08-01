@@ -1,0 +1,1 @@
+import{PromotionEditor}from"@/features/finance/components/promotions";export default async function Page({params}:{params:Promise<{id:string}>}){return <PromotionEditor id={(await params).id}/>}

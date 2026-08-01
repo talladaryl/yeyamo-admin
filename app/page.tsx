@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import {
   ArrowRight,
   Compass,
@@ -203,10 +204,10 @@ export default function Home() {
           ))}
         </nav>
 
-        <a className="topbar__cta" href="/admin">
+        <Link className="topbar__cta" href="/admin">
           <ShieldCheck aria-hidden="true" size={18} strokeWidth={2.1} />
           <span>Accéder au dashboard</span>
-        </a>
+        </Link>
       </header>
 
       <section className="hero" id="hero">

@@ -1,0 +1,12 @@
+import type { PageResponse } from "@/lib/api/types";
+export type EventStatus = "DRAFT" | "PENDING" | "PENDING_REVIEW" | "PUBLISHED" | "SUSPENDED" | "REJECTED" | "ARCHIVED" | "CANCELLED" | "COMPLETED";
+export type EventSummary = { id: string; placeId: string; organizerId?: string | null; partnerId?: string | null; regionId?: number | null; cityId?: number | null; categoryId?: number | null; title: string; description?: string | null; startAt: string; endAt: string; status: EventStatus; capacity: number; registeredCount: number; availableCapacity: number; fillRate: number; createdAt: string; updatedAt: string };
+export type EventDetail = EventSummary;
+export type EventParticipant = { ticketId: string; registrationId: string; userId: string; serialNumber: string; status: string; issuedAt: string; registeredAt: string; usedAt?: string | null };
+export type EventInput = { placeId: string; organizerId?: string; partnerId?: string; regionId?: number; cityId?: number; categoryId?: number; title: string; description?: string; startAt: string; endAt: string; capacity: number; status?: EventStatus };
+export type EventUpdateInput = Omit<EventInput, "placeId"> & { placeId?: string };
+export type EventFilters = { page: number; size: number; search?: string; status?: string; regionId?: string; cityId?: string; organizerId?: string; partnerId?: string; placeId?: string; categoryId?: string; startFrom?: string; startTo?: string; sort?: string };
+export type EventPage = PageResponse<EventSummary>;
+export type ScanStatistics = { eventId: string; validScans: number; alreadyUsedAttempts: number; invalidAttempts: number; accessDeniedAttempts: number; totalScans: number; successRate: number };
+export type AnalyticsMetric = { date: string; dimensionType: string; dimensionValue: string; ticketsSold: number; scans: number; rejectedScans: number; revenue: number; commission: number; refunds: number; attendanceRate: number; suppressed: boolean };
+export { type PageResponse };

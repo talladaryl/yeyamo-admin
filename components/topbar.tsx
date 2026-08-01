@@ -1,74 +1,11 @@
 "use client";
-
-import { Bell, CalendarDays, ChevronDown, Menu, Search, UserCircle2 } from "lucide-react";
-import { usePathname } from "next/navigation";
-
+import Link from "next/link";
+import { CalendarDays, ChevronDown, LogOut, Menu, Search, ShieldCheck, UserCircle2 } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
 import { getModuleByHref } from "@/lib/admin-config";
+import { useAdminSession } from "@/features/auth/session-context";
+import { AdminNotificationBell } from "@/features/notifications/components/admin-notifications";
 
-function getTopbarCopy(pathname: string) {
-  if (pathname === "/admin") {
-    return {
-      title: "Tableau de bord 👋",
-      subtitle: "Bienvenue sur l'administration YeYamo"
-    };
-  }
-
-  const module = getModuleByHref(pathname);
-
-  if (module) {
-    return {
-      title: module.label,
-      subtitle: module.summary
-    };
-  }
-
-  return {
-    title: "Administration YeYamo",
-    subtitle: "Pilotage des espaces, contenus et performances"
-  };
-}
-
-export function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
-  const pathname = usePathname();
-  const copy = getTopbarCopy(pathname);
-
-  return (
-    <header className="admin-topbar">
-      <div className="admin-topbar__headline">
-        <button type="button" className="admin-topbar__menu" onClick={onMenuClick} aria-label="Ouvrir le menu">
-          <Menu size={20} />
-        </button>
-        <div>
-          <h1 className="admin-topbar__title">{copy.title}</h1>
-          <p className="admin-topbar__subtitle">{copy.subtitle}</p>
-        </div>
-      </div>
-
-      <div className="admin-topbar__actions">
-        <label className="admin-topbar__search">
-          <Search size={18} aria-hidden="true" />
-          <input type="search" placeholder="Rechercher un lieu, un utilisateur..." aria-label="Rechercher un lieu, un utilisateur..." />
-        </label>
-
-        <button type="button" className="admin-topbar__icon-button" aria-label="Notifications">
-          <Bell size={18} />
-          <span className="admin-topbar__badge">5</span>
-        </button>
-
-        <button type="button" className="admin-topbar__period" aria-label="Sélectionner la période">
-          <CalendarDays size={18} aria-hidden="true" />
-          <span>01/06/2024 - 07/06/2024</span>
-          <ChevronDown size={16} aria-hidden="true" />
-        </button>
-
-        <button type="button" className="admin-topbar__user" aria-label="Compte utilisateur">
-          <span className="admin-topbar__user-avatar">
-            <UserCircle2 size={18} />
-          </span>
-          <span className="admin-topbar__user-name">Paul M.</span>
-          <ChevronDown size={16} aria-hidden="true" />
-        </button>
-      </div>
-    </header>
-  );
-}
+function copy(pathname:string){if(pathname==="/admin")return{title:"Tableau de bord",subtitle:"Bienvenue sur l’administration YeYamo"};const adminModule=getModuleByHref(pathname);return adminModule?{title:adminModule.label,subtitle:adminModule.summary}:{title:"Administration YeYamo",subtitle:"Pilotage des espaces, contenus et performances"}}
+export function Topbar({onMenuClick}:{onMenuClick:()=>void}){const pathname=usePathname();const router=useRouter();const{session}=useAdminSession();const[open,setOpen]=useState(false);const current=copy(pathname);const name=[session?.firstName,session?.lastName].filter(Boolean).join(" ")||session?.email||"Administrateur";async function logout(){await fetch("/api/auth/logout",{method:"POST"});router.replace("/admin/login");router.refresh()}return <header className="admin-topbar"><div className="admin-topbar__headline"><button type="button" className="admin-topbar__menu" onClick={onMenuClick} aria-label="Ouvrir le menu"><Menu size={20}/></button><div><h1 className="admin-topbar__title">{current.title}</h1><p className="admin-topbar__subtitle">{current.subtitle}</p></div></div><div className="admin-topbar__actions"><label className="admin-topbar__search"><Search size={18}/><input type="search" placeholder="Rechercher…" aria-label="Recherche globale"/></label><AdminNotificationBell/><button type="button" className="admin-topbar__period"><CalendarDays size={18}/><span>Période</span></button><div className="admin-topbar__account"><button type="button" className="admin-topbar__user" aria-expanded={open} onClick={()=>setOpen(value=>!value)}><span className="admin-topbar__user-avatar"><UserCircle2 size={18}/></span><span className="admin-topbar__identity"><strong>{name}</strong><small>{session?.roles[0]??"Session"}</small></span><ChevronDown size={16}/></button>{open?<div className="admin-topbar__menu-popover"><Link href="/admin/settings"><UserCircle2 size={16}/>Mon profil</Link><Link href="/admin/settings/security"><ShieldCheck size={16}/>Sécurité</Link><button type="button" onClick={()=>void logout()}><LogOut size={16}/>Déconnexion</button></div>:null}</div></div></header>}

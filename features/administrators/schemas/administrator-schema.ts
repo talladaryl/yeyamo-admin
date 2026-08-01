@@ -1,0 +1,3 @@
+import { z } from "zod";
+export const administratorSchema=z.object({userId:z.uuid("UUID utilisateur invalide"),role:z.enum(["ADMIN","MODERATOR","SUPER_ADMIN"]),status:z.enum(["ACTIVE","INACTIVE","SUSPENDED"]),permissionsText:z.string().default("{}")}).transform((value)=>{let permissions:Record<string,unknown>;try{permissions=JSON.parse(value.permissionsText) as Record<string,unknown>;}catch{throw new Error("Les permissions doivent être un objet JSON valide.");}return {userId:value.userId,role:value.role,status:value.status,permissions};});
+export type AdministratorFormValues=z.input<typeof administratorSchema>;

@@ -1,0 +1,1 @@
+import { Suspense } from "react"; import { EventsPage } from "@/features/events/components/events-page"; import { AdminSkeleton } from "@/components/admin/ui/admin-foundation"; export default function Page(){return <Suspense fallback={<AdminSkeleton/>}><EventsPage/></Suspense>}

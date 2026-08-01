@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import type { Route } from "next";
 import { usePathname } from "next/navigation";
 import {
   Building2,
@@ -24,7 +25,9 @@ import {
   type LucideIcon
 } from "lucide-react";
 
-import { adminNavigation, currentAdminRole } from "@/lib/admin-config";
+import { adminNavigation } from "@/lib/admin-config";
+import { can } from "@/features/auth/permissions";
+import { useAdminSession } from "@/features/auth/session-context";
 import { cn } from "@/lib/utils";
 
 const iconMap: Record<string, LucideIcon> = {
@@ -57,7 +60,10 @@ export function Sidebar({
   onClose: () => void;
 }) {
   const pathname = usePathname();
-  const visibleModules = adminNavigation.filter((module) => module.showInSidebar !== false);
+  const { session } = useAdminSession();
+  const visibleModules = adminNavigation.filter((module) => module.showInSidebar !== false && can(session, module));
+  const displayName = [session?.firstName, session?.lastName].filter(Boolean).join(" ") || session?.email || "Administrateur";
+  const initials = displayName.split(/\s+/).map((part) => part[0]).join("").slice(0, 2).toUpperCase();
 
   return (
     <>
@@ -81,7 +87,7 @@ export function Sidebar({
             return (
               <Link
                 key={`${module.href}-${module.label}-${index}`}
-                href={module.href as any}
+                href={module.href as Route}
                 className={cn("admin-sidebar__link", active && "is-active")}
                 onClick={onClose}
               >
@@ -94,10 +100,10 @@ export function Sidebar({
         </nav>
 
         <div className="admin-sidebar__profile">
-          <div className="admin-sidebar__avatar">PM</div>
+          <div className="admin-sidebar__avatar">{initials}</div>
           <div className="admin-sidebar__profile-copy">
-            <p className="admin-sidebar__profile-name">Paul M.</p>
-            <p className="admin-sidebar__profile-role">{currentAdminRole}</p>
+            <p className="admin-sidebar__profile-name">{displayName}</p>
+            <p className="admin-sidebar__profile-role">{session?.roles[0] ?? "—"}</p>
           </div>
           <ChevronDown size={18} aria-hidden="true" />
         </div>

@@ -1,0 +1,1 @@
+import{GamificationUnavailable}from"@/features/gamification/components/gamification";export default function Page(){return <GamificationUnavailable title="Anti-fraud Gamification" description="Aucun endpoint d’alertes ou sanctions gamification n’existe."/>}

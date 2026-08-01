@@ -1,0 +1,1 @@
+import{TrustDetail}from"@/features/moderation/components/trust-content";export default async function Page({params}:{params:Promise<{subjectId:string}>}){return <TrustDetail id={(await params).subjectId}/>}

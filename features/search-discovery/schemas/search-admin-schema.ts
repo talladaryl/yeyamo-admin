@@ -1,0 +1,1 @@
+import{z}from"zod";export const synonymSchema=z.object({terms:z.array(z.string().trim().min(1)).min(2)});export const rankingSchema=z.object({name:z.string().min(2),configuration:z.record(z.string(),z.unknown())});

@@ -9,11 +9,11 @@ export default async function AdminModuleRoute({
 }) {
   const { slug } = await params;
   const href = `/admin/${slug.join("/")}`;
-  const module = getModuleByHref(href);
+  const adminModule = getModuleByHref(href);
 
-  if (!module) {
+  if (!adminModule) {
     notFound();
   }
 
-  return <ModulePage module={module} />;
+  return <ModulePage module={adminModule} />;
 }

@@ -87,19 +87,17 @@ export function AppDownloadSection({
             ) : null}
           </div>
 
-          <div className="app-download__visual" aria-label="Aperçu de l'application mobile">
-            <video
-              className="app-download__video"
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="metadata"
-              aria-label="Animation vidéo Yamo"
-            >
-              <source src="/landing/anim-yamo.mp4" type="video/mp4" />
-            </video>
-          </div>
+          <video
+            className="app-download__video"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            aria-label="Animation vidéo Yamo"
+          >
+            <source src="/landing/anim-yamo.mp4" type="video/mp4" />
+          </video>
         </div>
       </AppDownloadReveal>
     </section>

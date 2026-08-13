@@ -214,7 +214,7 @@ export const communityStats: Stat[] = [
 export const communityTestimonials: Testimonial[] = [
   {
     quote:
-      "YeYamo m&apos;a permis de découvrir des endroits incroyables et de rencontrer des gens formidables. Une application incontournable !",
+      "YeYamo m'a permis de découvrir des endroits incroyables et de rencontrer des gens formidables. Une application incontournable !",
     name: "Christelle M.",
     role: "Voyageuse passionnée",
     avatar: "/community/avatar-1.png",
@@ -223,7 +223,7 @@ export const communityTestimonials: Testimonial[] = [
   },
   {
     quote:
-      "J&apos;adore la façon dont les parcours mettent en avant les lieux et les histoires locales, c&apos;est vraiment vivant.",
+      "J'adore la façon dont les parcours mettent en avant les lieux et les histoires locales, c'est vraiment vivant.",
     name: "Paul T.",
     role: "Créateur de contenu",
     avatar: "/community/avatar-2.png",

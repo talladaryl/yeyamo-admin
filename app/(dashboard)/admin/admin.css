@@ -189,9 +189,17 @@
 
 .admin-topbar__title {
   margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-size: 2rem;
   line-height: 1.05;
   letter-spacing: -0.04em;
+}
+
+.admin-topbar__title-icon {
+  flex: 0 0 auto;
+  color: #e30613;
 }
 
 .admin-topbar__subtitle {

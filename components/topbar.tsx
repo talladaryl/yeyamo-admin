@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, CalendarDays, ChevronDown, Menu, Search, UserCircle2 } from "lucide-react";
+import { Bell, CalendarDays, ChevronDown, LayoutDashboard, Menu, Search, UserCircle2 } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 import { getModuleByHref } from "@/lib/admin-config";
@@ -8,7 +8,7 @@ import { getModuleByHref } from "@/lib/admin-config";
 function getTopbarCopy(pathname: string) {
   if (pathname === "/admin") {
     return {
-      title: "Tableau de bord 👋",
+      title: "Tableau de bord",
       subtitle: "Bienvenue sur l'administration YeYamo"
     };
   }
@@ -39,7 +39,10 @@ export function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
           <Menu size={20} />
         </button>
         <div>
-          <h1 className="admin-topbar__title">{copy.title}</h1>
+          <h1 className="admin-topbar__title">
+            {pathname === "/admin" ? <LayoutDashboard size={22} className="admin-topbar__title-icon" aria-hidden="true" /> : null}
+            <span>{copy.title}</span>
+          </h1>
           <p className="admin-topbar__subtitle">{copy.subtitle}</p>
         </div>
       </div>

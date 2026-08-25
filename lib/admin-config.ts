@@ -12,6 +12,7 @@ export type AdminModule = {
     | "catalog"
     | "culture"
     | "places"
+    | "import"
     | "calendar"
     | "reservations"
     | "reviews"
@@ -115,6 +116,17 @@ export const adminNavigation: AdminModule[] = [
     summary: "National Discovery Catalog, sources, imports, corrections et statuts de publication.",
     highlights: ["Assets nationaux", "Source lineage", "Corrections", "Qualite catalogue"],
     primaryAction: "Lancer une revue d'asset"
+  },
+  {
+    label: "Imports",
+    href: "/admin/imports",
+    roles: ["SUPER_ADMIN", "ADMIN", "EDITOR"],
+    domain: "operations",
+    icon: "import",
+    badge: "CSV",
+    summary: "Import massif de lieux, événements, partenaires et contenus depuis des fichiers structurés.",
+    highlights: ["CSV/Excel", "Mapping", "Validation", "Historique"],
+    primaryAction: "Démarrer un import"
   },
   {
     label: "Culture",

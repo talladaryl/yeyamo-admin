@@ -53,8 +53,8 @@ export function LandingFooter() {
         <div className="site-footer__column">
           <h3>Contact</h3>
           <a href="mailto:hello@yeyamo.cm">hello@yeyamo.cm</a>
-          <a href="tel:+237658940985">658940985</a>
-          <a href="tel:+237676219440">676219440</a>
+          <a href="tel:+237658940985">+237 658 940 985</a>
+          <a href="tel:+237676219440">+237 676 219 440</a>
           <Link href="/">Yaoundé, Cameroun</Link>
         </div>
 
@@ -82,4 +82,3 @@ export function LandingFooter() {
     </footer>
   );
 }
-

@@ -1,5 +1,6 @@
 export const publicDesignTokens = {
   colors: {
+<<<<<<< HEAD
     primary: "#E50914",
     primaryDark: "#B80612",
     primarySoft: "#FFF1F3",
@@ -14,11 +15,27 @@ export const publicDesignTokens = {
     textMuted: "#5B6474",
     border: "rgba(16, 24, 40, 0.08)",
     borderHairline: "#E4E7EC"
+=======
+    primary: "#e50914",
+    primaryDark: "#b80612",
+    primarySoft: "#fff1f3",
+    background: "#ffffff",
+    backgroundMuted: "#f6f7f9",
+    surfaceWarm: "#fff7f5",
+    text: "#101827",
+    textMuted: "#5b6474",
+    border: "rgba(16, 24, 40, 0.08)",
+    borderHairline: "#e4e7ec"
+>>>>>>> 000a9bc48fa70ccff4c32dbd753a9ace192fdf38
   },
   radius: {
     sm: "12px",
     md: "16px",
+<<<<<<< HEAD
     lg: "20px",
+=======
+    lg: "24px",
+>>>>>>> 000a9bc48fa70ccff4c32dbd753a9ace192fdf38
     xl: "32px",
     pill: "999px"
   },
@@ -30,9 +47,9 @@ export const publicDesignTokens = {
   },
   hero: {
     textMaxWidth: "42rem",
-    visualMinHeight: "clamp(28rem, 58vw, 44rem)",
-    floatingCardWidth: "18rem",
-    floatingCardWidthCompact: "15rem"
+    visualMinHeight: "clamp(38rem, 54vw, 46rem)",
+    floatingCardWidth: "14.5rem",
+    floatingCardWidthCompact: "12rem"
   },
   motion: {
     duration: {
@@ -51,8 +68,8 @@ export const publicDesignTokens = {
     }
   },
   shadows: {
-    soft: "0 10px 30px rgba(23, 23, 23, 0.06)",
-    card: "0 16px 40px rgba(23, 23, 23, 0.08)",
-    hover: "0 18px 48px rgba(227, 6, 19, 0.12)"
+    soft: "0 24px 60px rgba(16, 24, 40, 0.08)",
+    card: "0 18px 44px rgba(16, 24, 40, 0.08)",
+    hover: "0 18px 36px rgba(229, 9, 20, 0.18)"
   }
 } as const;

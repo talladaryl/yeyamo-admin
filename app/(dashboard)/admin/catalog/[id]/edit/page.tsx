@@ -1,0 +1,1 @@
+import{CatalogAssetEditor}from"@/features/catalog/components/catalog-asset-editor";export default async function Page({params}:{params:Promise<{id:string}>}){return <CatalogAssetEditor id={(await params).id}/>}

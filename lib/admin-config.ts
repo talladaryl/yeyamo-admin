@@ -1,39 +1,40 @@
 import type { AdminRole } from "@/lib/types";
 
 export type AdminModule = {
+  route?: string;
   label: string;
   href: string;
   roles: AdminRole[];
+  permissions?: string[];
+  scopes?: string[];
   domain: "core" | "operations" | "growth" | "governance";
   icon:
-    | "dashboard"
-    | "users"
-    | "partners"
-    | "catalog"
-    | "culture"
-    | "places"
-    | "import"
-    | "calendar"
-    | "reservations"
-    | "reviews"
-    | "moderation"
-    | "trust"
-    | "gamification"
-    | "campaigns"
-    | "alert"
-    | "message"
-    | "mail"
-    | "search"
-    | "analytics"
-    | "settings";
+  | "dashboard"
+  | "users"
+  | "partners"
+  | "catalog"
+  | "culture"
+  | "places"
+  | "import"
+  | "calendar"
+  | "reservations"
+  | "reviews"
+  | "moderation"
+  | "trust"
+  | "gamification"
+  | "campaigns"
+  | "alert"
+  | "message"
+  | "mail"
+  | "search"
+  | "analytics"
+  | "settings";
   badge?: string;
   summary: string;
   highlights: string[];
   primaryAction: string;
   showInSidebar?: boolean;
 };
-
-export const currentAdminRole: AdminRole = "SUPER_ADMIN";
 
 export const adminNavigation: AdminModule[] = [
   {
@@ -55,6 +56,17 @@ export const adminNavigation: AdminModule[] = [
     summary: "Gestion des comptes, statuts, activite, confidentialite et workflows de suspension.",
     highlights: ["Recherche avancee", "Statuts compte", "Activity timeline", "Exports et retention"],
     primaryAction: "Lancer une bulk action"
+  },
+  {
+    label: "Administrateurs",
+    href: "/admin/administrators",
+    route: "/admin/administrators",
+    roles: ["SUPER_ADMIN", "ADMIN"],
+    domain: "governance",
+    icon: "settings",
+    summary: "Gestion distincte des comptes admin_users, rôles, statuts et permissions.",
+    highlights: ["RBAC", "Permissions", "Statuts", "Audit"],
+    primaryAction: "Créer un administrateur"
   },
   {
     label: "Lieux",
@@ -118,15 +130,44 @@ export const adminNavigation: AdminModule[] = [
     primaryAction: "Lancer une revue d'asset"
   },
   {
-    label: "Imports",
-    href: "/admin/imports",
+    label: "Régions",
+    href: "/admin/regions",
     roles: ["SUPER_ADMIN", "ADMIN", "EDITOR"],
     domain: "operations",
-    icon: "import",
-    badge: "CSV",
-    summary: "Import massif de lieux, événements, partenaires et contenus depuis des fichiers structurés.",
-    highlights: ["CSV/Excel", "Mapping", "Validation", "Historique"],
-    primaryAction: "Démarrer un import"
+    icon: "places",
+    summary: "Référentiel des régions YeYamo.",
+    highlights: ["Régions", "Codes", "Couvertures"],
+    primaryAction: "Gérer les régions"
+  },
+  {
+    label: "Villes & quartiers",
+    href: "/admin/cities",
+    roles: ["SUPER_ADMIN", "ADMIN", "EDITOR"],
+    domain: "operations",
+    icon: "places",
+    summary: "Référentiels villes et districts.",
+    highlights: ["Villes", "Districts", "Coordonnées"],
+    primaryAction: "Gérer les villes"
+  },
+  {
+    label: "Catégories lieux",
+    href: "/admin/place-categories",
+    roles: ["SUPER_ADMIN", "ADMIN", "EDITOR"],
+    domain: "operations",
+    icon: "catalog",
+    summary: "Taxonomie des catégories de lieux.",
+    highlights: ["Catégories", "Hiérarchie", "Icônes"],
+    primaryAction: "Consulter les catégories"
+  },
+  {
+    label: "Collections",
+    href: "/admin/collections",
+    roles: ["SUPER_ADMIN", "ADMIN", "EDITOR"],
+    domain: "operations",
+    icon: "catalog",
+    summary: "Collections éditoriales et assets ordonnés.",
+    highlights: ["Collections", "Publication", "Assets"],
+    primaryAction: "Créer une collection"
   },
   {
     label: "Culture",
@@ -239,6 +280,46 @@ export const adminNavigation: AdminModule[] = [
     summary: "Retention, activation, couverture catalogue, performance partenaires et exports.",
     highlights: ["Retention", "Funnels", "Catalogue health", "Exports"],
     primaryAction: "Exporter un rapport"
+  },
+  {
+    label: "Paiements",
+    href: "/admin/payments",
+    roles: ["SUPER_ADMIN", "ADMIN", "SUPPORT"],
+    domain: "operations",
+    icon: "reservations",
+    summary: "Transactions, remboursements et anomalies.",
+    highlights: ["Paiements", "Remboursements", "Anomalies", "Idempotence"],
+    primaryAction: "Consulter les paiements"
+  },
+  {
+    label: "Promotions",
+    href: "/admin/promotions",
+    roles: ["SUPER_ADMIN", "ADMIN", "COMMERCIAL"],
+    domain: "growth",
+    icon: "campaigns",
+    summary: "Codes promotionnels et usages.",
+    highlights: ["Promotions", "Réductions", "Usages", "Partenaires"],
+    primaryAction: "Créer une promotion"
+  },
+  {
+    label: "Commissions",
+    href: "/admin/commissions",
+    roles: ["SUPER_ADMIN", "ADMIN"],
+    domain: "governance",
+    icon: "analytics",
+    summary: "Règles de commission par produit.",
+    highlights: ["Pourcentage", "Fixe", "Versions", "Périodes"],
+    primaryAction: "Créer une règle"
+  },
+  {
+    label: "Ledger",
+    href: "/admin/ledger",
+    roles: ["SUPER_ADMIN", "ADMIN"],
+    domain: "governance",
+    icon: "analytics",
+    summary: "Soldes et écritures partenaires.",
+    highlights: ["Balance", "Mouvements", "Ajustements", "Audit"],
+    primaryAction: "Ouvrir le ledger"
   },
   {
     label: "Parametres",

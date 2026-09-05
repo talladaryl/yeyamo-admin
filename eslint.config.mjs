@@ -1,4 +1,9 @@
-import nextCoreWebVitals from "eslint-config-next/core-web-vitals";
-import nextTypeScript from "eslint-config-next/typescript";
+import { defineConfig, globalIgnores } from "eslint/config";
+import nextVitals from "eslint-config-next/core-web-vitals";
+import nextTs from "eslint-config-next/typescript";
 
-export default [...nextCoreWebVitals, ...nextTypeScript];
+export default defineConfig([
+  ...nextVitals,
+  ...nextTs,
+  globalIgnores([".next/**", "node_modules/**", "next-env.d.ts"])
+]);

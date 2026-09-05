@@ -1,5 +1,21 @@
 export const publicDesignTokens = {
   colors: {
+<<<<<<< HEAD
+    primary: "#E50914",
+    primaryDark: "#B80612",
+    primarySoft: "#FFF1F3",
+    background: "#FFFFFF",
+    surface: "#FFFFFF",
+    surfaceWarm: "#FFF7F5",
+    surfaceSoft: "#FFF8F9",
+    surfaceMuted: "#F6F7F9",
+    surfaceNavy: "#0B1633",
+    surfaceNavy2: "#131F42",
+    text: "#101827",
+    textMuted: "#5B6474",
+    border: "rgba(16, 24, 40, 0.08)",
+    borderHairline: "#E4E7EC"
+=======
     primary: "#e50914",
     primaryDark: "#b80612",
     primarySoft: "#fff1f3",
@@ -10,11 +26,16 @@ export const publicDesignTokens = {
     textMuted: "#5b6474",
     border: "rgba(16, 24, 40, 0.08)",
     borderHairline: "#e4e7ec"
+>>>>>>> 000a9bc48fa70ccff4c32dbd753a9ace192fdf38
   },
   radius: {
     sm: "12px",
     md: "16px",
+<<<<<<< HEAD
+    lg: "20px",
+=======
     lg: "24px",
+>>>>>>> 000a9bc48fa70ccff4c32dbd753a9ace192fdf38
     xl: "32px",
     pill: "999px"
   },

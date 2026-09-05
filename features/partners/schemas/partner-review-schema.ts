@@ -1,0 +1,1 @@
+import{z}from"zod";export const partnerReviewSchema=z.object({status:z.enum(["APPROVED","REJECTED","NEEDS_INFO","REQUIRES_CHANGES"]),reviewComment:z.string().trim().min(3,"Le commentaire est obligatoire").max(2000),riskScore:z.coerce.number().int().min(0).max(100).optional()});

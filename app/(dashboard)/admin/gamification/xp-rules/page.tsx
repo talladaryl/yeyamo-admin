@@ -1,0 +1,1 @@
+import{GamificationUnavailable}from"@/features/gamification/components/gamification";export default function Page(){return <GamificationUnavailable title="XP Rules" description="Aucun endpoint administrateur des règles XP n’est exposé."/>}

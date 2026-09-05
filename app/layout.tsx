@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { AppProviders } from "@/app/providers";
 
 const headingFont = localFont({
   src: [
@@ -48,9 +49,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="fr">
+    <html lang="fr" data-scroll-behavior="smooth">
       <body className={`${headingFont.variable} ${bodyFont.variable}`}>
-        {children}
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   );

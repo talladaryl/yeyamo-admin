@@ -1,9 +1,17 @@
 "use client";
+<<<<<<< HEAD
+import Link from "next/link";
+import { CalendarDays, ChevronDown, LogOut, Menu, Search, UserCircle2 } from "lucide-react";
+import { usePathname, useRouter } from "next/navigation";
+=======
 
 import { Bell, CalendarDays, ChevronDown, LayoutDashboard, Menu, Search, UserCircle2 } from "lucide-react";
 import { usePathname } from "next/navigation";
 
+>>>>>>> 000a9bc48fa70ccff4c32dbd753a9ace192fdf38
 import { getModuleByHref } from "@/lib/admin-config";
+import { useAdminSession } from "@/features/auth/session-context";
+import { AdminNotificationBell } from "@/features/notifications/components/admin-notifications";
 
 function getTopbarCopy(pathname: string) {
   if (pathname === "/admin") {
@@ -30,7 +38,16 @@ function getTopbarCopy(pathname: string) {
 
 export function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { session } = useAdminSession();
   const copy = getTopbarCopy(pathname);
+  const displayName = [session?.firstName, session?.lastName].filter(Boolean).join(" ") || session?.email || "Administrateur";
+
+  async function logout() {
+    await fetch("/api/auth/logout", { method: "POST" });
+    router.replace("/admin/login");
+    router.refresh();
+  }
 
   return (
     <header className="admin-topbar">
@@ -53,10 +70,7 @@ export function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
           <input type="search" placeholder="Rechercher un lieu, un utilisateur..." aria-label="Rechercher un lieu, un utilisateur..." />
         </label>
 
-        <button type="button" className="admin-topbar__icon-button" aria-label="Notifications">
-          <Bell size={18} />
-          <span className="admin-topbar__badge">5</span>
-        </button>
+        <AdminNotificationBell />
 
         <button type="button" className="admin-topbar__period" aria-label="Sélectionner la période">
           <CalendarDays size={18} aria-hidden="true" />
@@ -64,12 +78,15 @@ export function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
           <ChevronDown size={16} aria-hidden="true" />
         </button>
 
-        <button type="button" className="admin-topbar__user" aria-label="Compte utilisateur">
+        <Link href="/admin/settings/security" className="admin-topbar__user" aria-label="Compte administrateur">
           <span className="admin-topbar__user-avatar">
             <UserCircle2 size={18} />
           </span>
-          <span className="admin-topbar__user-name">Paul M.</span>
+          <span className="admin-topbar__user-name">{displayName}</span>
           <ChevronDown size={16} aria-hidden="true" />
+        </Link>
+        <button type="button" className="admin-topbar__icon-button" aria-label="Se déconnecter" onClick={logout}>
+          <LogOut size={18} />
         </button>
       </div>
     </header>

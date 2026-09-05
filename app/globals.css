@@ -1,6 +1,7 @@
 :root {
   --background: #ffffff;
   --surface: #ffffff;
+  --surface-warm: #fff7f5;
   --surface-soft: #fff8f9;
   --surface-muted: #f6f7f9;
   --surface-warm: #fff7f5;
@@ -307,9 +308,15 @@ select {
   content: "";
   position: absolute;
   inset: 0;
+<<<<<<< HEAD
+  background: rgba(255, 255, 255, 0.18);
+  transform: translateX(-120%);
+  transition: transform 420ms ease;
+=======
   background: rgba(255, 255, 255, 0.14);
   opacity: 0;
   transition: opacity 420ms ease;
+>>>>>>> 000a9bc48fa70ccff4c32dbd753a9ace192fdf38
 }
 
 .button--primary:hover::before,
@@ -392,7 +399,12 @@ select {
   position: absolute;
   inset: 10% 8% 2% 2%;
   border-radius: 50%;
+<<<<<<< HEAD
+  background: var(--primary-soft);
+  filter: blur(24px);
+=======
   background: rgba(229, 9, 20, 0.12);
+>>>>>>> 000a9bc48fa70ccff4c32dbd753a9ace192fdf38
 }
 
 .hero-stage__dashboard {
@@ -402,7 +414,11 @@ select {
   width: min(100%, 56rem);
   padding: 0.72rem;
   border-radius: 2rem;
+<<<<<<< HEAD
+  background: var(--surface);
+=======
   background: rgba(255, 255, 255, 0.97);
+>>>>>>> 000a9bc48fa70ccff4c32dbd753a9ace192fdf38
   box-shadow: var(--shadow-hero);
   transform: perspective(1400px) rotateZ(-1.8deg);
 }
@@ -466,7 +482,11 @@ select {
   top: 19%;
   width: 9rem;
   height: 9rem;
+<<<<<<< HEAD
+  background: rgba(19, 31, 66, 0.05);
+=======
   background: rgba(19, 31, 66, 0.06);
+>>>>>>> 000a9bc48fa70ccff4c32dbd753a9ace192fdf38
 }
 
 .hero-stage__mascot {
@@ -549,7 +569,7 @@ select {
   justify-content: center;
   width: 2rem;
   height: 2rem;
-  border-radius: 0.7rem;
+  border-radius: 0.75rem;
   background: var(--primary-soft);
   color: var(--primary);
 }
@@ -613,7 +633,11 @@ select {
 }
 
 .hero__wave-main {
+<<<<<<< HEAD
+  fill: var(--primary);
+=======
   fill: #e50914;
+>>>>>>> 000a9bc48fa70ccff4c32dbd753a9ace192fdf38
 }
 
 .content-shell {
@@ -834,7 +858,11 @@ select {
   height: 2.65rem;
   border: 0;
   border-radius: 999px;
+<<<<<<< HEAD
+  background: var(--surface);
+=======
   background: #fff;
+>>>>>>> 000a9bc48fa70ccff4c32dbd753a9ace192fdf38
   color: var(--text);
   box-shadow: 0 14px 28px rgba(15, 23, 42, 0.1);
   transition:
@@ -893,7 +921,11 @@ select {
 .destination-card__overlay {
   position: absolute;
   inset: 0;
+<<<<<<< HEAD
+  background: rgba(8, 15, 28, 0.28);
+=======
   background: rgba(8, 15, 28, 0.22);
+>>>>>>> 000a9bc48fa70ccff4c32dbd753a9ace192fdf38
 }
 
 .destination-card__pill,
@@ -1156,7 +1188,11 @@ select {
 
 .store-button:hover {
   transform: translateY(-3px) scale(1.01);
+<<<<<<< HEAD
+  background: var(--surface-navy-2);
+=======
   background: #131f42;
+>>>>>>> 000a9bc48fa70ccff4c32dbd753a9ace192fdf38
   box-shadow: 0 20px 40px rgba(11, 22, 51, 0.24);
 }
 
@@ -1176,7 +1212,11 @@ select {
   min-height: 34rem;
   border-radius: 2rem;
   overflow: visible;
+<<<<<<< HEAD
+  background: var(--surface);
+=======
   background: var(--surface-warm);
+>>>>>>> 000a9bc48fa70ccff4c32dbd753a9ace192fdf38
 }
 
 .app-showcase__background {

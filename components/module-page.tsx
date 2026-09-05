@@ -1,7 +1,6 @@
-import Link from "next/link";
 import type { Route } from "next";
+import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
-
 import { adminNavigation, type AdminModule } from "@/lib/admin-config";
 
 export function ModulePage({ module }: { module: AdminModule }) {

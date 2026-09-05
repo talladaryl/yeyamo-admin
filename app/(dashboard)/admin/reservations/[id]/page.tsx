@@ -1,0 +1,1 @@
+import { ReservationDetail } from "@/features/reservations/components/reservation-detail"; export default async function Page({params}:{params:Promise<{id:string}>}){return <ReservationDetail id={(await params).id}/>}

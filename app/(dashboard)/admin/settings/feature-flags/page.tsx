@@ -1,0 +1,1 @@
+import{SettingsUnavailable}from"@/features/settings/components/settings";export default function Page(){return <SettingsUnavailable title="Feature Flags" description="Aucun endpoint ne fournit flags, environnement, rollout, auteur ou historique."/>}

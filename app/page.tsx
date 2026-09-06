@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import { LandingPage } from "@/components/landing/landing-page";
 
-export default function Home() {
-  return <LandingPage />;
-=======
+
 import { LandingHeader } from "../components/landing/landing-header";
 import { Hero } from "../components/landing/hero";
 import { FeaturesSection } from "../components/landing/features";
@@ -80,5 +76,5 @@ export default function Home() {
       <LandingFooter />
     </main>
   );
->>>>>>> 000a9bc48fa70ccff4c32dbd753a9ace192fdf38
+
 }

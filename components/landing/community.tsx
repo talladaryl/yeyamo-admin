@@ -78,7 +78,7 @@ export function CommunitySection() {
           </span>
           <span className="community__avatar community__avatar--more">+50K</span>
         </div>
-        <Link className="button button--primary" href="/admin">
+        <Link className="button button--primary" href="#download">
           <span>Rejoindre la communauté</span>
           <ArrowRight aria-hidden="true" size={18} />
         </Link>

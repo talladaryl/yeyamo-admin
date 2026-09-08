@@ -280,11 +280,7 @@ export const faqItems: FaqItem[] = [
     answer:
       "Absolument. La plateforme est pensée pour les visiteurs, les partenaires, les créateurs de contenu et les communautés locales."
   },
-  {
-    question: "Puis-je accéder rapidement au dashboard ?",
-    answer:
-      "Le bouton d'accès au dashboard reste présent dans la navigation et dans les appels à l'action principaux."
-  }
+ 
 ];
 
 export const socialItems = [

@@ -1,14 +1,7 @@
 "use client";
-<<<<<<< HEAD
 import Link from "next/link";
-import { CalendarDays, ChevronDown, LogOut, Menu, Search, UserCircle2 } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
-=======
-
-import { Bell, CalendarDays, ChevronDown, LayoutDashboard, Menu, Search, UserCircle2 } from "lucide-react";
-import { usePathname } from "next/navigation";
-
->>>>>>> 000a9bc48fa70ccff4c32dbd753a9ace192fdf38
+import { CalendarDays, ChevronDown, LayoutDashboard, LogOut, Menu, Search, UserCircle2 } from "lucide-react";
 import { getModuleByHref } from "@/lib/admin-config";
 import { useAdminSession } from "@/features/auth/session-context";
 import { AdminNotificationBell } from "@/features/notifications/components/admin-notifications";

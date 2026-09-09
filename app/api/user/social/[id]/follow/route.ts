@@ -1,0 +1,6 @@
+import { NextRequest, NextResponse } from "next/server";
+import { userBackendFetch } from "@/lib/user-auth/backend";
+import { noStore, rejectInvalidMutation } from "@/lib/user-auth/route-utils";
+const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+async function mutate(request: NextRequest, { params }: { params: Promise<{ id: string }> }) { const rejected = rejectInvalidMutation(request); if (rejected) return rejected; const { id } = await params; if (!uuid.test(id)) return NextResponse.json({ code: "PROFILE_NOT_FOUND", message: "Profil introuvable.", retryable: false }, { status: 404 }); const upstream = await userBackendFetch(request, `/api/v1/users/social/${id}/follow`, { method: request.method, authenticated: true }).catch(() => undefined); if (!upstream) return noStore(NextResponse.json({ code: "FOLLOW_UNAVAILABLE", message: "L’action est indisponible.", retryable: true }, { status: 503 })); if (!upstream.ok) return noStore(NextResponse.json({ code: "FOLLOW_ERROR", message: "L’action n’a pas pu être enregistrée.", retryable: upstream.status >= 500 }, { status: upstream.status })); return noStore(new NextResponse(null, { status: 204 })); }
+export const POST = mutate; export const DELETE = mutate;

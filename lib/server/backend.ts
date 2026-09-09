@@ -6,7 +6,14 @@ export const ACCESS_COOKIE = "yeyamo_admin_access";
 export const REFRESH_COOKIE = "yeyamo_admin_refresh";
 export const USER_COOKIE = "yeyamo_admin_user";
 
-export const backendBaseUrl = () => (process.env.API_BASE_URL ?? process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8083").replace(/\/$/, "");
+export const backendBaseUrl = () =>
+  (
+    process.env.API_BASE_URL ??
+    process.env.API_URL ??
+    process.env.NEXT_PUBLIC_API_URL ??
+    process.env.NEXT_PUBLIC_API_BASE_URL ??
+    "http://localhost:8083"
+  ).replace(/\/$/, "");
 
 export const privilegedRoles = new Set(["SUPER_ADMIN", "ADMIN", "MODERATOR", "EDITOR", "SUPPORT", "COMMERCIAL"]);
 

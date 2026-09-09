@@ -1,0 +1,1 @@
+export type Booking = { id: string; reference: string; activityId: string; slotId: string; quantity: number; unitPrice: number; totalAmount: number; currency: string; countryCode: string | null; status: string; paymentStatus: string; cancellationReason: string | null; createdAt: string; confirmedAt: string | null; cancelledAt: string | null; completedAt: string | null };

@@ -1,0 +1,10 @@
+export type PublicApiError = { code: string; message: string; correlationId?: string; retryable: boolean };
+export type PlaceSummary = { id: string; name: string; slug: string | null; latitude: number | null; longitude: number | null; address: string | null; status: string; categoryName: string | null; distanceKm: number | null };
+export type PlaceDetail = PlaceSummary & { description: string | null; phone: string | null; website: string | null; media: Array<{ id: number; url: string; type: string; displayOrder: number | null }>; schedules: Array<{ id: number; dayOfWeek: number; openTime: string; closeTime: string }> };
+export type EventSummary = { id: string; placeId: string; title: string; startAt: string; endAt: string; status: string; capacity: number | null; registeredCount: number };
+export type EventDetail = EventSummary & { description: string | null; coverMediaId: string | null };
+export type Category = { id: number; name: string; slug: string; icon: string | null };
+export type MapMarker = Pick<PlaceSummary, "id" | "name" | "latitude" | "longitude">;
+export type PlacePage = { page: number; size: number; hasNext: boolean; items: PlaceSummary[] };
+export type PublicSearchItem = { type: string; id: string; title: string; subtitle: string | null; categoryCode: string | null; regionCode: string | null; city: string | null };
+export type PublicSearchPage = { page: number; size: number; hasNext: boolean; items: PublicSearchItem[]; generatedAt: string };

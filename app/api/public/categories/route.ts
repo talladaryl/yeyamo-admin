@@ -1,0 +1,4 @@
+import { NextRequest, NextResponse } from "next/server";
+import { publicBackendFetch } from "@/lib/public/backend";
+import { mapCategories } from "@/features/explorer/mapper";
+export async function GET(request: NextRequest) { const correlationId = request.headers.get("x-correlation-id") ?? crypto.randomUUID(); try { const upstream = await publicBackendFetch(request, "/api/v1/categories"); if (!upstream.ok) return NextResponse.json({ code: "CATEGORIES_UPSTREAM_ERROR", message: "Les catégories sont momentanément indisponibles.", correlationId, retryable: upstream.status >= 500 }, { status: upstream.status }); return NextResponse.json(mapCategories(await upstream.json()), { headers: { "Cache-Control": "public, s-maxage=300", "X-Correlation-Id": correlationId } }); } catch { return NextResponse.json({ code: "MALFORMED_CATEGORIES_RESPONSE", message: "Les catégories ne peuvent pas être affichées.", correlationId, retryable: false }, { status: 502 }); } }

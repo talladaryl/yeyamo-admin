@@ -1,0 +1,1 @@
+import{ConversationPage}from"@/features/messaging/components/messaging-pages";export default async function Page({params}:{params:Promise<{id:string}>}){return <ConversationPage id={(await params).id}/>}

@@ -1,0 +1,5 @@
+import { NextRequest, NextResponse } from "next/server";
+import { mapTickets } from "@/features/ticketing/mapper";
+import { userBackendFetch } from "@/lib/user-auth/backend";
+import { noStore, upstreamError } from "@/lib/user-auth/route-utils";
+export async function GET(request: NextRequest) { const status = request.nextUrl.searchParams.get("status"); const query = status ? `?status=${encodeURIComponent(status)}` : ""; const upstream = await userBackendFetch(request, `/api/v1/tickets/my-tickets${query}`, { authenticated: true }).catch(() => undefined); if (!upstream) return noStore(NextResponse.json({ code: "TICKETS_UNAVAILABLE", message: "Les billets sont indisponibles.", retryable: true }, { status: 503 })); if (!upstream.ok) return noStore(await upstreamError(upstream)); try { return noStore(NextResponse.json(mapTickets(await upstream.json()))); } catch { return noStore(NextResponse.json({ code: "MALFORMED_TICKETS_RESPONSE", message: "Les billets reçus sont invalides.", retryable: false }, { status: 502 })); } }

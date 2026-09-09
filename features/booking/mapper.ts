@@ -1,0 +1,5 @@
+import { z } from "zod";
+import type { Booking } from "@/features/booking/types";
+const booking = z.object({ id: z.string().uuid(), reference: z.string(), userId: z.string(), activityId: z.string().min(1), slotId: z.string().uuid(), quantity: z.number().int().positive(), unitPrice: z.number().nonnegative(), totalAmount: z.number().nonnegative(), currency: z.string().length(3), countryCode: z.string().length(2).nullable(), status: z.string(), paymentStatus: z.string(), cancellationReason: z.string().nullable(), createdAt: z.string().datetime({ offset: true }), confirmedAt: z.string().datetime({ offset: true }).nullable(), cancelledAt: z.string().datetime({ offset: true }).nullable(), completedAt: z.string().datetime({ offset: true }).nullable() });
+export function mapBooking(input: unknown): Booking { const value = booking.parse(input); const { userId: _userId, ...result } = value; return result; }
+export function mapBookings(input: unknown): Booking[] { return z.array(booking).parse(input).map(({ userId: _userId, ...item }) => item); }

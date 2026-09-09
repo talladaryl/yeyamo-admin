@@ -1,0 +1,1 @@
+export type Payment = { id: string; bookingId: string | null; sagaId: string | null; amount: number; currency: string; status: string; provider: string | null; failureReason: string | null; createdAt: string; updatedAt: string };

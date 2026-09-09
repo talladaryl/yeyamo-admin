@@ -1,0 +1,13 @@
+:root {
+  color-scheme: light;
+  --yy-bg: #fffaf8; --yy-bg-subtle: #f7f4f2; --yy-surface: #fff; --yy-surface-raised: #fff;
+  --yy-text-primary: #17151c; --yy-text-secondary: #5f5a66; --yy-text-muted: #817b87; --yy-text-inverse: #fff;
+  --yy-border: #ded9df; --yy-border-subtle: #ebe7eb; --yy-accent: #e50914; --yy-accent-hover: #c70812;
+  --yy-accent-active: #a90710; --yy-accent-soft: #fff0f1; --yy-on-accent: #fff; --yy-danger: #c52233;
+  --yy-success: #16845b; --yy-warning: #a96400; --yy-info: #2765c5; --yy-focus: #7b61ff;
+  --yy-overlay: rgba(23,21,28,.58); --yy-media-canvas: #eee9e7; --yy-radius-sm: 10px; --yy-radius-md: 16px;
+  --yy-radius-lg: 24px; --yy-shadow: 0 18px 48px rgba(38,29,35,.1);
+}
+@media (prefers-color-scheme: dark) {
+  :root { color-scheme: dark; --yy-bg: #111014; --yy-bg-subtle: #19171d; --yy-surface: #211f25; --yy-surface-raised: #29262d; --yy-text-primary: #f8f4f7; --yy-text-secondary: #c5bec8; --yy-text-muted: #99919d; --yy-border: #48424b; --yy-border-subtle: #353039; --yy-accent: #ff4650; --yy-accent-hover: #ff626a; --yy-accent-active: #e9343e; --yy-accent-soft: #3a1c21; --yy-overlay: rgba(0,0,0,.72); --yy-media-canvas: #18161b; }
+}

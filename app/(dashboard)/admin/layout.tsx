@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 
 import { AdminShell } from "@/components/admin-shell";
+import { AdminProviders } from "@/components/admin/admin-providers";
 
 import "./admin.css";
 
@@ -15,5 +16,9 @@ export default function AdminLayout({
 }: Readonly<{
   children: ReactNode;
 }>) {
-  return <AdminShell>{children}</AdminShell>;
+  return (
+    <AdminProviders>
+      <AdminShell>{children}</AdminShell>
+    </AdminProviders>
+  );
 }

@@ -89,6 +89,7 @@ export function AppDownloadSection({
 
           <video
             className="app-download__video"
+            suppressHydrationWarning
             autoPlay
             loop
             muted

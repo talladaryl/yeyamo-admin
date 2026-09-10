@@ -11,13 +11,16 @@ import {
   ChevronDown,
   ChevronRight,
   Compass,
+  Facebook,
   Heart,
+  Instagram,
   Landmark,
   LayoutDashboard,
   MapPin,
   Menu,
   MessageSquareQuote,
   MoonStar,
+  Music2,
   Play,
   ShieldCheck,
   Sparkles,
@@ -25,6 +28,7 @@ import {
   Star,
   Store,
   Users,
+  Youtube,
   type LucideIcon
 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -304,6 +308,18 @@ const socialItems = [
   { label: "X", short: "x" },
   { label: "TikTok", short: "tt" }
 ] as const;
+
+const socialIcons = {
+  Facebook,
+  Instagram,
+  YouTube: Youtube,
+  TikTok: Music2
+} as const;
+
+function SocialIcon({ label, short }: { label: string; short: string }) {
+  const Icon = socialIcons[label as keyof typeof socialIcons];
+  return Icon ? <Icon aria-hidden="true" size={18} strokeWidth={2.2} /> : <span aria-hidden="true">{short}</span>;
+}
 
 const cardReveal = createRevealVariants(24);
 const reducedFade = {
@@ -1091,8 +1107,8 @@ export function LandingPage() {
 
             <div className="site-footer__socials" aria-label="Réseaux sociaux">
               {socialItems.map((item) => (
-                <a key={item.label} href="#top" className="site-footer__social">
-                  <span>{item.short}</span>
+                <a key={item.label} href="#top" className="site-footer__social" aria-label={item.label}>
+                  <SocialIcon label={item.label} short={item.short} />
                 </a>
               ))}
             </div>
@@ -1118,7 +1134,7 @@ export function LandingPage() {
 
           <div className="site-footer__column">
             <h3>Contact</h3>
-            <a href="mailto:hello@yeyamo.cm">hello@yeyamo.cm</a>
+            <a href="mailto:support@yeyamo.com">support@yeyamo.com</a>
             <a href="tel:+237600000000">+237 600 000 000</a>
             <Link href="/">Yaoundé, Cameroun</Link>
           </div>

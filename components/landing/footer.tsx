@@ -1,7 +1,19 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Facebook, Instagram, Music2, Youtube } from "lucide-react";
 import { socialItems } from "./data";
+
+const socialIcons = {
+  Facebook,
+  Instagram,
+  YouTube: Youtube,
+  TikTok: Music2
+} as const;
+
+function SocialIcon({ label, short }: { label: string; short: string }) {
+  const Icon = socialIcons[label as keyof typeof socialIcons];
+  return Icon ? <Icon aria-hidden="true" size={18} strokeWidth={2.2} /> : <span aria-hidden="true">{short}</span>;
+}
 
 export function LandingFooter() {
   return (
@@ -25,8 +37,8 @@ export function LandingFooter() {
 
           <div className="site-footer__socials" aria-label="Réseaux sociaux">
             {socialItems.map((item) => (
-              <a key={item.label} href="#top" className="site-footer__social">
-                <span>{item.short}</span>
+              <a key={item.label} href="#top" className="site-footer__social" aria-label={item.label}>
+                <SocialIcon label={item.label} short={item.short} />
               </a>
             ))}
           </div>
@@ -52,7 +64,7 @@ export function LandingFooter() {
 
         <div className="site-footer__column">
           <h3>Contact</h3>
-          <a href="mailto:hello@yeyamo.cm">support@yeyamo.cm</a>
+          <a href="mailto:support@yeyamo.com">support@yeyamo.com</a>
           <a href="tel:+237658940985">+237 658 940 985</a>
           <a href="tel:+237676219440">+237 676 219 440</a>
           <Link href="/">Yaoundé, Cameroun</Link>

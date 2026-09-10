@@ -1,0 +1,9 @@
+"use client";
+import Link from "next/link";
+import type { Route } from "next";
+import { useSearchParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { CalendarCheck } from "lucide-react";
+import { EmptyState, ErrorState, Skeleton } from "@/components/public/ui";
+import { partnerPortalApi } from "@/features/partner-portal/api";
+export function PartnerBookingsPage() { const params = useSearchParams(); const page = Math.max(0, Number(params.get("page") ?? 0) || 0); const query = useQuery({ queryKey: ["user", "partner", "bookings", page], queryFn: () => partnerPortalApi.bookings(page), retry: false }); if (query.isPending) return <section className="yy-partner"><Skeleton /><Skeleton /></section>; if (query.isError || !query.data) return <ErrorState title="Réservations indisponibles" message="Les réservations de vos activités ne peuvent pas être chargées." />; return <section className="yy-partner"><header><p className="yy-kicker">Espace professionnel</p><h1>Réservations</h1><p>Uniquement les réservations liées aux slots appartenant à votre identité authentifiée.</p></header>{query.data.items.length ? <div className="yy-partner-bookings">{query.data.items.map((item) => <article key={item.id}><CalendarCheck aria-hidden="true" /><div><strong>{item.reference}</strong><span>Activité {item.activityId} · {item.quantity} place(s)</span><small>{new Intl.NumberFormat("fr-FR", { style: "currency", currency: item.currency }).format(item.totalAmount)} · {item.status} · {item.paymentStatus}</small></div></article>)}</div> : <EmptyState title="Aucune réservation" message="Aucune réservation n’est associée à vos activités." />}<nav className="yy-market-pager" aria-label="Pagination">{page > 0 ? <Link href={`/partner/bookings?page=${page - 1}` as Route}>Précédent</Link> : <span />}{query.data.hasNext ? <Link href={`/partner/bookings?page=${page + 1}` as Route}>Suivant</Link> : null}</nav></section>; }

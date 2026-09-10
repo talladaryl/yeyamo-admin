@@ -1,0 +1,5 @@
+import { NextRequest, NextResponse } from "next/server";
+import { mapArtworkPage } from "@/features/culture-market/mapper";
+import { userBackendFetch } from "@/lib/user-auth/backend";
+import { noStore } from "@/lib/user-auth/route-utils";
+export async function GET(request: NextRequest) { const raw=request.nextUrl.searchParams.get("page")??"0";if(!/^\d{1,6}$/.test(raw))return noStore(NextResponse.json({code:"INVALID_PAGE",message:"Pagination invalide.",retryable:false},{status:400}));const upstream=await userBackendFetch(request,`/api/v1/artworks/partner/me?page=${raw}&size=20`,{authenticated:true}).catch(()=>undefined);if(!upstream)return noStore(NextResponse.json({code:"ARTWORKS_UNAVAILABLE",message:"Œuvres indisponibles.",retryable:true},{status:503}));if(!upstream.ok)return noStore(new NextResponse(upstream.body,{status:upstream.status,headers:{"Content-Type":"application/json","Cache-Control":"private, no-store"}}));try{return noStore(NextResponse.json(mapArtworkPage(await upstream.json())));}catch{return noStore(NextResponse.json({code:"ARTWORKS_RESPONSE_INVALID",message:"Réponse œuvres invalide.",retryable:true},{status:502}));}}

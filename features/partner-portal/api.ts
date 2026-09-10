@@ -1,0 +1,3 @@
+import type { PartnerBookingPage, PartnerInput, PartnerProfile, PartnerStatusView } from "@/features/partner-portal/types";
+import { userAuthFetch } from "@/lib/user-auth/client";
+export const partnerPortalApi = { status: () => userAuthFetch<PartnerStatusView>("/api/user/partner/status"), create: (body: PartnerInput) => userAuthFetch<PartnerProfile>("/api/user/partner/profile", { method: "POST", body: JSON.stringify(body) }), update: (body: PartnerInput) => userAuthFetch<PartnerProfile>("/api/user/partner/profile", { method: "PUT", body: JSON.stringify(body) }), submit: () => userAuthFetch<PartnerProfile>("/api/user/partner/submit", { method: "POST" }), bookings: (page = 0) => userAuthFetch<PartnerBookingPage>(`/api/user/partner/bookings?page=${page}`) };

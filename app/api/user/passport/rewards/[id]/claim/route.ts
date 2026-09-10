@@ -1,0 +1,5 @@
+import { NextRequest, NextResponse } from "next/server";
+import { userBackendFetch } from "@/lib/user-auth/backend";
+import { noStore, rejectInvalidMutation } from "@/lib/user-auth/route-utils";
+const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) { const invalid = rejectInvalidMutation(request); if (invalid) return invalid; const { id } = await params; if (!uuid.test(id)) return noStore(NextResponse.json({ code: "REWARD_NOT_FOUND", message: "Récompense introuvable.", retryable: false }, { status: 404 })); const upstream = await userBackendFetch(request, `/api/v1/me/rewards/${id}/claim`, { method: "POST", authenticated: true }).catch(() => undefined); if (!upstream) return noStore(NextResponse.json({ code: "REWARD_CLAIM_UNAVAILABLE", message: "La récompense ne peut pas être réclamée actuellement.", retryable: true }, { status: 503 })); return noStore(new NextResponse(upstream.body, { status: upstream.status, headers: { "Content-Type": "application/json" } })); }

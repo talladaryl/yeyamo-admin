@@ -1,0 +1,9 @@
+export type PassportSummary = { totalXp: number; level: number; currentLevelThreshold: number; nextLevelThreshold: number; currentLevelXp: number; xpToNextLevel: number; earnedBadgesCount: number; passportStampsCount: number; availableRewardsCount: number; currentStreak: number; longestStreak: number; lastActivityDate: string | null; updatedAt: string };
+export type PassportBadge = { code: string; name: string; description: string; earned: boolean; earnedAt: string | null };
+export type PassportStamp = { id: string; destinationId: string; stampedAt: string };
+export type PassportReward = { id: string; code: string; title: string; status: "AVAILABLE" | "CLAIMED" | "EXPIRED"; grantedAt: string; claimedAt: string | null; source: string };
+export type MissionObjective = { id: string; label: string; eventType: string; metric: string; target: number; current: number; completed: boolean };
+export type PassportMission = { id: string; code: string; title: string; description: string; status: string; startsAt: string | null; endsAt: string | null; rewardCode: string; rewardTitle: string; rewardAmount: number; objectives: MissionObjective[]; userStatus: string | null; completedAt: string | null };
+export type MissionReward = { id: string; missionCode: string; code: string; title: string; amount: number; status: string; grantedAt: string | null; failureReason: string | null };
+export type XpHistory = { page: number; size: number; hasNext: boolean; items: Array<{ id: string; points: number; reason: string; sourceId: string; occurredAt: string }> };
+export type Passport = { summary: PassportSummary; badges: PassportBadge[]; stamps: PassportStamp[]; rewards: PassportReward[]; missions: PassportMission[]; missionRewards: MissionReward[]; history: XpHistory };

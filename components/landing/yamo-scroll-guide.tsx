@@ -1,5 +1,7 @@
 "use client";
 
+import { usePublicLanguage } from "./public-language";
+
 import Image from "next/image";
 import {
   motion,
@@ -23,6 +25,7 @@ const YAMO_HEIGHT = 338;
 const VELOCITY_LIMIT = 1400;
 
 export function YamoScrollGuide({ sectionIds, className }: YamoScrollGuideProps) {
+  const { t } = usePublicLanguage();
   const shouldReduceMotion = useReducedMotion();
   const { scrollY } = useScroll();
   const wrapperRef = useRef<HTMLDivElement | null>(null);
@@ -92,7 +95,7 @@ export function YamoScrollGuide({ sectionIds, className }: YamoScrollGuideProps)
     return (
       <Image
         src="/mascot/yamo.png"
-        alt={YAMO_ALT}
+        alt={t(YAMO_ALT)}
         width={YAMO_WIDTH}
         height={YAMO_HEIGHT}
         className={`hero-stage__mascot ${className ?? ""}`.trim()}
@@ -130,7 +133,7 @@ export function YamoScrollGuide({ sectionIds, className }: YamoScrollGuideProps)
         <div className="hero-stage__scroll-guide-frame">
           <Image
             src="/mascot/yamo.png"
-            alt={YAMO_ALT}
+            alt={t(YAMO_ALT)}
             fill
             sizes="(max-width: 768px) 8rem, (max-width: 1200px) 11rem, 14rem"
             className="hero-stage__scroll-guide-image"

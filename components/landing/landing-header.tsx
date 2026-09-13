@@ -1,49 +1,64 @@
 "use client";
 
+import { usePublicLanguage } from "./public-language";
+
 import Image from "next/image";
-import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ChevronDown, Menu, ShieldCheck } from "lucide-react";
+import { ChevronDown, Menu } from "lucide-react";
+import { LanguageSwitcher } from "./public-language";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { navItems } from "./data";
+import "./public-navigation.css";
+
+const primaryPaths = new Set(["/", "/destinations", "/communaute", "/documentation"]);
+const expandedPaths = new Set(["/fonctionnalites", "/securite", "/application", "/telechargement"]);
+const primaryItems = navItems.filter((item) => primaryPaths.has(item.href) || expandedPaths.has(item.href));
+const additionalItems = navItems.filter((item) => !primaryPaths.has(item.href));
 
 export function LandingHeader() {
+  const { t, href } = usePublicLanguage();
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
   return (
     <header className="site-header">
       <div className="site-header__inner">
-        <a className="site-header__brand" href="#top" aria-label="YeYamo - retour en haut de page">
+        <a className="site-header__brand" href={href("/")} aria-label={t("YeYamo — Accueil")}>
           <Image
             src="/brand/yeyamo-logo.png"
-            alt="YeYamo"
+            alt={t("YeYamo")}
             width={54}
             height={54}
             priority
             className="site-header__brand-mark"
           />
-          <span className="site-header__brand-name">YeYamo</span>
+          <span className="site-header__brand-name">{t("YeYamo")}</span>
         </a>
 
-        <nav className="site-header__nav" aria-label="Navigation principale">
-          {navItems.map((item) => (
-            <a key={item.label} href={item.href} className="site-header__nav-link">
-              {item.label}
+        <nav className="site-header__nav" aria-label={t("Navigation principale")}>
+          {primaryItems.map((item) => (
+            <a key={item.label} href={href(item.href)} className={`site-header__nav-link${expandedPaths.has(item.href) ? " site-header__expanded-link" : ""}`} aria-current={pathname === item.href ? "page" : undefined}>
+              {t(item.label)}
             </a>
           ))}
+          {/* The native menu can be opened before React hydrates. */}
+          <details suppressHydrationWarning className="site-header__more" onKeyDown={(event) => {
+            if (event.key === "Escape") { event.currentTarget.open = false; event.currentTarget.querySelector("summary")?.focus(); }
+          }} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) event.currentTarget.open = false; }}>
+            <summary className="site-header__nav-link">{t("Toutes les pages")}<ChevronDown size={14} aria-hidden="true" /></summary>
+            <div className="site-header__more-links">{additionalItems.map((item) => <a key={item.href} href={href(item.href)} className={expandedPaths.has(item.href) ? "site-header__overflow-link" : undefined} aria-current={pathname === item.href ? "page" : undefined}>{t(item.label)}</a>)}</div>
+          </details>
         </nav>
 
         <div className="site-header__actions">
-          <Link className="site-header__cta" href="/admin">
-            <ShieldCheck aria-hidden="true" size={18} strokeWidth={2.2} />
-            <span>Accéder au dashboard</span>
-          </Link>
+          <LanguageSwitcher />
 
           <button
             type="button"
             className="site-header__menu"
-            aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+            aria-label={t(mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu")}
             aria-expanded={mobileMenuOpen}
             onClick={() => setMobileMenuOpen((value) => !value)}
           >
@@ -65,17 +80,15 @@ export function LandingHeader() {
               {navItems.map((item) => (
                 <a
                   key={item.label}
-                  href={item.href}
+                  href={href(item.href)}
                   className="site-header__drawer-link"
+                  aria-current={pathname === item.href ? "page" : undefined}
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  {item.label}
+                  {t(item.label)}
                 </a>
               ))}
             </div>
-            <Link className="site-header__drawer-cta" href="/admin">
-              Accéder au dashboard
-            </Link>
           </motion.div>
         ) : null}
       </AnimatePresence>

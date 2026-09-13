@@ -1,5 +1,7 @@
 "use client";
 
+import { usePublicLanguage } from "./public-language";
+
 import type { ReactNode } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { SectionHeading } from "./section-heading";
@@ -23,6 +25,7 @@ const infoSections = {
 } as const;
 
 export function InfoGrid({ items }: { items: InfoCard[] }) {
+  const { href, t } = usePublicLanguage();
   const shouldReduceMotion = useReducedMotion();
   const itemVariants = shouldReduceMotion ? fadeVariants : revealVariants;
 
@@ -40,11 +43,11 @@ export function InfoGrid({ items }: { items: InfoCard[] }) {
 
         if (item.href) {
           return (
-            <motion.a key={item.title} className="secondary-card" href={item.href} variants={itemVariants} custom="up">
+            <motion.a key={item.title} className="secondary-card" href={href(item.href)} variants={itemVariants} custom="up">
               <SectionIcon icon={Icon} className="secondary-card__icon" />
               <div className="secondary-card__copy">
-                <h3 className="secondary-card__title">{item.title}</h3>
-                <p className="secondary-card__text">{item.description}</p>
+                <h3 className="secondary-card__title">{t(item.title)}</h3>
+                <p className="secondary-card__text">{t(item.description)}</p>
               </div>
               <ChevronRight aria-hidden="true" className="secondary-card__arrow" size={17} />
             </motion.a>
@@ -55,8 +58,8 @@ export function InfoGrid({ items }: { items: InfoCard[] }) {
           <motion.article key={item.title} className="secondary-card" variants={itemVariants} custom="up">
             <SectionIcon icon={Icon} className="secondary-card__icon" />
             <div className="secondary-card__copy">
-              <h3 className="secondary-card__title">{item.title}</h3>
-              <p className="secondary-card__text">{item.description}</p>
+              <h3 className="secondary-card__title">{t(item.title)}</h3>
+              <p className="secondary-card__text">{t(item.description)}</p>
             </div>
             <ChevronRight aria-hidden="true" className="secondary-card__arrow" size={17} />
           </motion.article>
@@ -79,9 +82,10 @@ export function InfoSection({
   description: string;
   section: keyof typeof infoSections;
 }) {
+  const { t } = usePublicLanguage();
   return (
     <section className="faq" id={id} aria-labelledby={`${id}-title`}>
-      <SectionHeading id={`${id}-title`} badge={badge} title={title} description={description} />
+      <SectionHeading id={`${id}-title`} badge={t(badge)} title={t(title)} description={t(description)} />
       <InfoGrid items={infoSections[section]} />
     </section>
   );

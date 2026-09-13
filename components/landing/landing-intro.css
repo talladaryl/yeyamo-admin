@@ -1,0 +1,22 @@
+.landing-intro {
+  position: fixed; inset: 0; z-index: 1000; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; min-height: 100dvh; padding: 2rem;
+  background: radial-gradient(ellipse 80% 60% at 50% 38%, #2a1a18 0%, transparent 70%), linear-gradient(180deg, #1a1414, #0c0a0a);
+  color: #f6f0ee; opacity: 1; transition: opacity 280ms ease, visibility 280ms;
+}
+.landing-intro--leaving { opacity: 0; visibility: hidden; }
+.landing-intro__eyebrow { position: absolute; top: max(2rem, env(safe-area-inset-top)); letter-spacing: .2em; font-size: .65rem; text-align: center; color: #c3aaa4; }
+.landing-intro__logo { width: min(76vw, 420px); filter: drop-shadow(0 30px 60px #d11c1926); }
+.landing-intro__logo svg { width: 100%; height: auto; display: block; overflow: visible; }
+.landing-intro__logo path { fill-opacity: 0; stroke-opacity: 0; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.landing-intro__logo .p-icon-dark, .landing-intro__logo .p-text-dark { stroke: #d11c19; fill: #d11c19; }
+.landing-intro__logo .p-icon-light, .landing-intro__logo .p-text-light { stroke: #e07369; fill: #e07369; }
+.landing-intro__logo .p-tagline { stroke: #b8aaa5; fill: #b8aaa5; }
+.landing-intro__logo ellipse { fill: #dcdcdc; opacity: .1; }
+.landing-intro__bottom { position: absolute; bottom: max(2rem, env(safe-area-inset-bottom)); display: grid; justify-items: center; gap: .8rem; }
+.landing-intro__bottom p { font-size: .9rem; color: #c9b9b4; margin: 0; }
+.landing-intro__bottom button { display: inline-flex; align-items: center; gap: .75rem; border-radius: 999px; border: 1px solid #ffffff38; color: #f6f0ee; background: transparent; padding: .75rem 1.1rem; font-size: .75rem; cursor: pointer; }
+.landing-intro__bottom button:hover { border-color: #e07369; background: #ffffff08; }
+.landing-intro__bottom button:focus-visible { outline: 2px solid #e07369; outline-offset: 5px; }
+@media (max-height: 520px) { .landing-intro__logo { width: min(42vh, 240px); } .landing-intro__bottom { bottom: .75rem; gap: .3rem; } .landing-intro__eyebrow { top: 1rem; } }
+@media (prefers-reduced-motion: reduce) { .landing-intro { display: none; transition: none; } }

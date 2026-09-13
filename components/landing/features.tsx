@@ -1,5 +1,7 @@
 "use client";
 
+import { usePublicLanguage } from "./public-language";
+
 import { motion, useReducedMotion } from "framer-motion";
 import { featureCards } from "./data";
 import { SectionIcon } from "./section-icon";
@@ -23,6 +25,7 @@ function FeatureTile({
   icon: typeof featureCards[number]["icon"];
   reducedMotion: boolean;
 }) {
+  const { t } = usePublicLanguage();
   return (
     <motion.article
       className="tile tile--feature"
@@ -31,14 +34,14 @@ function FeatureTile({
     >
       <SectionIcon icon={Icon} className="tile__icon" />
       <div className="tile__copy">
-        <h3 className="tile__title">{title}</h3>
-        <p className="tile__text">{description}</p>
+        <h3 className="tile__title">{t(title)}</h3>
+        <p className="tile__text">{t(description)}</p>
       </div>
     </motion.article>
   );
 }
 
-export function FeaturesSection() {
+export function FeaturesSection({ showSolutions = true }: { showSolutions?: boolean }) {
   const shouldReduceMotion = useReducedMotion();
 
   return (
@@ -58,7 +61,7 @@ export function FeaturesSection() {
           ))}
         </div>
 
-        <SolutionsStrip />
+        {showSolutions && <SolutionsStrip />}
       </motion.div>
     </section>
   );

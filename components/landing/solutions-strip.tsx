@@ -1,5 +1,7 @@
 "use client";
 
+import { usePublicLanguage } from "./public-language";
+
 import { motion, useReducedMotion } from "framer-motion";
 import { solutionItems } from "./data";
 import { SectionIcon } from "./section-icon";
@@ -12,6 +14,7 @@ const fadeVariants = {
 } as const;
 
 export function SolutionsStrip() {
+  const { t } = usePublicLanguage();
   const shouldReduceMotion = useReducedMotion();
   const itemVariants = shouldReduceMotion ? fadeVariants : revealVariants;
 
@@ -32,8 +35,8 @@ export function SolutionsStrip() {
           <motion.article key={item.title} className="action-item" variants={itemVariants} custom="up">
             <SectionIcon icon={Icon} className="action-item__icon" />
             <div className="action-item__copy">
-              <h3 className="action-item__title">{item.title}</h3>
-              <p className="action-item__text">{item.description}</p>
+              <h3 className="action-item__title">{t(item.title)}</h3>
+              <p className="action-item__text">{t(item.description)}</p>
             </div>
             {index < solutionItems.length - 1 ? (
               <span className="action-item__divider" aria-hidden="true" />

@@ -3,13 +3,18 @@ import {
   Bell,
   BookOpen,
   Compass,
+  EyeOff,
+  Flag,
   Heart,
   Landmark,
+  KeyRound,
   LayoutDashboard,
+  LogOut,
   MapPin,
   MessageSquareQuote,
   MoonStar,
   ShieldCheck,
+  ShieldAlert,
   Sparkles,
   SquareArrowOutUpRight,
   Store,
@@ -27,13 +32,19 @@ import type {
 } from "./types";
 
 export const navItems: NavItem[] = [
-  { label: "Fonctionnalités", href: "#features" },
-  { label: "Solutions", href: "#solutions" },
-  { label: "Rôles", href: "#roles" },
-  { label: "Sécurité", href: "#security" },
-  { label: "À propos", href: "#about" },
-  { label: "Documentation", href: "#documentation" },
-  { label: "Télécharger", href: "#download" }
+  { label: "Accueil", href: "/" },
+  { label: "Fonctionnalités", href: "/fonctionnalites" },
+  { label: "Destinations", href: "/destinations" },
+  { label: "Communauté", href: "/communaute" },
+  { label: "À propos", href: "/a-propos" },
+  { label: "Documentation", href: "/documentation" },
+  { label: "Télécharger", href: "/telechargement" },
+  { label: "Solutions", href: "/solutions" },
+  { label: "Rôles", href: "/profils" },
+  { label: "Sécurité", href: "/securite" },
+  { label: "Application", href: "/application" },
+  { label: "FAQ", href: "/faq" },
+  { label: "Politique de confidentialité", href: "/confidentialite" }
 ];
 
 export const heroBenefits = [
@@ -116,6 +127,42 @@ export const securityCards: InfoCard[] = [
     title: "Traçabilité discrète",
     description: "Les actions importantes sont suivies pour soutenir la confiance et la modération.",
     icon: MoonStar
+  },
+  {
+    title: "Protection du compte",
+    description: "Choisissez un mot de passe unique et ne partagez jamais vos identifiants ni vos codes de connexion.",
+    icon: KeyRound,
+    href: "/documentation#account"
+  },
+  {
+    title: "Localisation maîtrisée",
+    description: "Vérifiez les autorisations de localisation de votre appareil et adaptez-les aux fonctionnalités que vous utilisez.",
+    icon: MapPin,
+    href: "/confidentialite#location"
+  },
+  {
+    title: "Vie privée et publications",
+    description: "Avant de partager une photo ou un récit, protégez vos informations personnelles et celles des personnes présentes.",
+    icon: EyeOff,
+    href: "/confidentialite#sharing"
+  },
+  {
+    title: "Vigilance face aux fraudes",
+    description: "Vérifiez le destinataire et les conditions avant tout paiement. Méfiez-vous des liens suspects et des demandes urgentes de transfert.",
+    icon: ShieldAlert,
+    href: "/documentation#bookings"
+  },
+  {
+    title: "Signalement et assistance",
+    description: "Un contenu abusif ou une activité suspecte ? Contactez Support@yeyamo.com en décrivant le problème, sans transmettre de mot de passe.",
+    icon: Flag,
+    href: "mailto:Support@yeyamo.com"
+  },
+  {
+    title: "Appareils partagés",
+    description: "Déconnectez-vous après utilisation sur un appareil partagé et évitez d’y enregistrer vos identifiants.",
+    icon: LogOut,
+    href: "/confidentialite#security"
   }
 ];
 
@@ -147,25 +194,25 @@ export const documentationCards: InfoCard[] = [
     title: "Guides de démarrage",
     description: "Comprendre la carte, les parcours et les bonnes pratiques pour démarrer vite.",
     icon: BookOpen,
-    href: "#faq"
+    href: "/documentation#getting-started"
   },
   {
-    title: "Référence API",
+    title: "Intégrations",
     description: "Demander l’accès et les spécifications nécessaires pour intégrer YeYamo.",
     icon: SquareArrowOutUpRight,
-    href: "mailto:hello@yeyamo.cm?subject=Accès%20API%20YeYamo"
+    href: "/documentation#integrations"
   },
   {
     title: "Centre d’aide",
     description: "Retrouver les réponses rapides aux questions fréquentes et aux points bloquants.",
     icon: MessageSquareQuote,
-    href: "#faq"
+    href: "/documentation#troubleshooting"
   },
   {
     title: "Support équipe",
     description: "Contacter l’équipe pour être accompagné sur un usage, un compte ou une intégration.",
     icon: ArrowRight,
-    href: "mailto:hello@yeyamo.cm?subject=Support%20YeYamo"
+    href: "/documentation#support"
   }
 ];
 
@@ -280,7 +327,11 @@ export const faqItems: FaqItem[] = [
     answer:
       "Absolument. La plateforme est pensée pour les visiteurs, les partenaires, les créateurs de contenu et les communautés locales."
   },
- 
+  {
+    question: "Où trouver de l’aide pour utiliser YeYamo ?",
+    answer:
+      "La documentation propose des guides de démarrage, des conseils pratiques et les coordonnées du support. Le lien est disponible dans la navigation et en bas de page."
+  }
 ];
 
 export const socialItems = [

@@ -1,0 +1,30 @@
+"use client";
+
+import type { ReactNode } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Award, CheckCircle2, Flame, Gift, MapPin, Target, Trophy } from "lucide-react";
+import { EmptyState, ErrorState, Skeleton } from "@/components/public/ui";
+import { passportApi } from "@/features/passport/api";
+
+const date = (value: string) => new Intl.DateTimeFormat("fr-FR", { dateStyle: "medium" }).format(new Date(value));
+
+export function PassportPage() {
+  const client = useQueryClient();
+  const query = useQuery({ queryKey: ["user", "passport"], queryFn: passportApi.get, retry: false });
+  const claim = useMutation({ mutationFn: passportApi.claim, retry: false, onSuccess: () => void client.invalidateQueries({ queryKey: ["user", "passport"] }) });
+  if (query.isPending) return <section className="yy-passport"><Skeleton /><Skeleton /><Skeleton /></section>;
+  if (query.isError || !query.data) return <ErrorState title="Passport indisponible" message="Votre progression ne peut pas être chargée actuellement." />;
+  const passport = query.data;
+  const levelSpan = passport.summary.nextLevelThreshold - passport.summary.currentLevelThreshold;
+  const progress = Math.min(passport.summary.currentLevelXp, levelSpan);
+  return <section className="yy-passport">
+    <header className="yy-passport-hero"><div><p className="yy-kicker">Votre parcours</p><h1>Passport Yeyamo</h1><p>Une vue de votre progression réelle, alimentée par vos activités.</p></div><div className="yy-passport-level" aria-label={`Niveau ${passport.summary.level}`}><Trophy aria-hidden="true" /><strong>{passport.summary.level}</strong><span>Niveau</span></div></header>
+    <article className="yy-passport-xp"><div><strong>{passport.summary.totalXp.toLocaleString("fr-FR")} XP</strong><span>{passport.summary.xpToNextLevel} XP avant le niveau suivant</span></div><progress max={levelSpan} value={progress}>Progression {progress} sur {levelSpan}</progress><dl><div><dt>Badges</dt><dd>{passport.summary.earnedBadgesCount}</dd></div><div><dt>Étapes</dt><dd>{passport.summary.passportStampsCount}</dd></div><div><dt>Série actuelle</dt><dd>{passport.summary.currentStreak} jour(s)</dd></div><div><dt>Record</dt><dd>{passport.summary.longestStreak} jour(s)</dd></div></dl></article>
+    <PassportSection icon={<Award aria-hidden="true" />} title="Badges">{passport.badges.length ? <div className="yy-passport-grid">{passport.badges.map((badge) => <article key={badge.code} data-locked={!badge.earned}><Award aria-hidden="true" /><h3>{badge.name}</h3><p>{badge.description}</p><small>{badge.earned && badge.earnedAt ? `Obtenu le ${date(badge.earnedAt)}` : "À débloquer"}</small></article>)}</div> : <EmptyState title="Aucun badge" message="Le catalogue de badges est actuellement vide." />}</PassportSection>
+    <PassportSection icon={<Target aria-hidden="true" />} title="Missions">{passport.missions.length ? <div className="yy-passport-stack">{passport.missions.map((mission) => <article key={mission.id}><div className="yy-passport-row"><div><h3>{mission.title}</h3><p>{mission.description}</p></div><span className="yy-badge">{mission.userStatus ?? mission.status}</span></div>{mission.objectives.map((objective) => <div className="yy-passport-objective" key={objective.id}><span>{objective.completed ? <CheckCircle2 aria-hidden="true" /> : <Target aria-hidden="true" />}{objective.label}</span><progress max={objective.target} value={Math.min(objective.current, objective.target)}>{objective.current} sur {objective.target}</progress><small>{objective.current} / {objective.target}</small></div>)}<small>Récompense : {mission.rewardTitle} · {mission.rewardAmount}</small></article>)}</div> : <EmptyState title="Aucune mission" message="Aucune mission n’est disponible pour le moment." />}</PassportSection>
+    <PassportSection icon={<Gift aria-hidden="true" />} title="Récompenses">{passport.rewards.length || passport.missionRewards.length ? <div className="yy-passport-stack">{passport.rewards.map((reward) => <article className="yy-passport-row" key={reward.id}><div><h3>{reward.title}</h3><small>Accordée le {date(reward.grantedAt)} · {reward.status}</small></div>{reward.status === "AVAILABLE" ? <button className="yy-button" type="button" disabled={claim.isPending} onClick={() => claim.mutate(reward.id)}>{claim.isPending && claim.variables === reward.id ? "Réclamation…" : "Réclamer"}</button> : null}</article>)}{passport.missionRewards.map((reward) => <article className="yy-passport-row" key={reward.id}><div><h3>{reward.title}</h3><small>Mission {reward.missionCode} · {reward.status}</small></div><span>{reward.amount}</span></article>)}</div> : <EmptyState title="Aucune récompense" message="Vos récompenses apparaîtront ici." />}{claim.isError ? <p className="yy-form-error" role="alert">La récompense n’a pas pu être réclamée. Réessayez.</p> : null}</PassportSection>
+    <div className="yy-passport-columns"><PassportSection icon={<MapPin aria-hidden="true" />} title="Étapes du voyage">{passport.stamps.length ? <ol className="yy-passport-list">{passport.stamps.map((stamp) => <li key={stamp.id}><MapPin aria-hidden="true" /><span>Destination {stamp.destinationId}<small>{date(stamp.stampedAt)}</small></span></li>)}</ol> : <EmptyState title="Aucune étape" message="Les destinations validées apparaîtront ici." />}</PassportSection><PassportSection icon={<Flame aria-hidden="true" />} title="Historique XP">{passport.history.items.length ? <ol className="yy-passport-list">{passport.history.items.map((entry) => <li key={entry.id}><Flame aria-hidden="true" /><span>{entry.reason}<small>{date(entry.occurredAt)}</small></span><strong>+{entry.points}</strong></li>)}</ol> : <EmptyState title="Aucun XP" message="Votre historique est encore vide." />}</PassportSection></div>
+  </section>;
+}
+
+function PassportSection({ icon, title, children }: { icon: ReactNode; title: string; children: ReactNode }) { return <section className="yy-passport-section"><header>{icon}<h2>{title}</h2></header>{children}</section>; }

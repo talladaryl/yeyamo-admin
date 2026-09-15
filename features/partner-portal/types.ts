@@ -1,0 +1,9 @@
+export const businessTypes = ["INDIVIDUAL", "COMPANY", "ASSOCIATION", "PUBLIC_ORGANIZATION", "BUSINESS", "ARTISAN", "ARTIST", "CULTURAL_ASSOCIATION", "MUSEUM", "CULTURAL_EXPERT", "TOURISM_OPERATOR"] as const;
+export type BusinessType = typeof businessTypes[number];
+export type PartnerStatus = "DRAFT" | "SUBMITTED" | "UNDER_REVIEW" | "NEEDS_INFO" | "REQUIRES_CHANGES" | "APPROVED" | "REJECTED" | "SUSPENDED" | "DELETED";
+export type PartnerProfile = { id: string; legalName: string; tradeName: string | null; businessType: BusinessType; registrationNumber: string | null; taxId: string | null; contactEmail: string; contactPhone: string | null; websiteUrl: string | null; description: string | null; primaryCountryCode: string | null; operatingCountries: string[]; status: PartnerStatus; reviewComment: string | null; submittedAt: string | null; verifiedAt: string | null; createdAt: string; updatedAt: string };
+export type PartnerState = "NOT_PARTNER" | "APPLICATION_DRAFT" | "APPLICATION_PENDING" | "ACTIVE" | "REJECTED" | "SUSPENDED";
+export type PartnerStatusView = { state: PartnerState; profile: PartnerProfile | null; canEdit: boolean; canSubmit: boolean; canAccessDashboard: boolean };
+export type PartnerInput = Pick<PartnerProfile, "legalName" | "tradeName" | "businessType" | "registrationNumber" | "taxId" | "contactEmail" | "contactPhone" | "websiteUrl" | "description" | "primaryCountryCode" | "operatingCountries">;
+export type PartnerBooking = { id: string; reference: string; activityId: string; slotId: string; quantity: number; totalAmount: number; currency: string; countryCode: string | null; status: string; paymentStatus: string; cancellationReason: string | null; createdAt: string; confirmedAt: string | null; cancelledAt: string | null; completedAt: string | null };
+export type PartnerBookingPage = { page: number; size: number; hasNext: boolean; items: PartnerBooking[] };

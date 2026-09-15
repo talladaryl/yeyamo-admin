@@ -1,3 +1,9 @@
+@import "../styles/tokens.css";
+@import "../styles/public.css";
+@import "../styles/passport.css";
+@import "../styles/partner.css";
+@import "../styles/partner-bookings.css";
+
 :root {
   --background: #ffffff;
   --surface: #ffffff;

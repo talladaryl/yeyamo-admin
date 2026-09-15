@@ -4,13 +4,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import type { Route } from "next";
-import { Compass, Home, Menu, MessageCircle, Plus, UserRound } from "lucide-react";
+import { Award, BriefcaseBusiness, Compass, Home, Menu, MessageCircle, Palette, Plus, Store, UserRound } from "lucide-react";
 import { useProtectedAction } from "@/features/user-auth/protected-action-context";
 import { useUserSession } from "@/features/user-auth/user-session-context";
 import { Avatar, IconButton } from "@/components/public/ui";
 
-const publicItems = [{ href: "/", label: "Feed", icon: Home }, { href: "/explorer", label: "Explorer", icon: Compass }];
-const protectedItems = [{ href: "/create", label: "Créer", icon: Plus, reason: "Connectez-vous pour créer" }, { href: "/messages", label: "Messages", icon: MessageCircle, reason: "Connectez-vous pour accéder à vos messages" }, { href: "/me", label: "Profil", icon: UserRound, reason: "Connectez-vous pour voir votre profil" }];
+const publicItems = [{ href: "/", label: "Feed", icon: Home }, { href: "/explorer", label: "Explorer", icon: Compass }, { href: "/artisans", label: "Artisans", icon: Store }, { href: "/artworks", label: "Œuvres", icon: Palette }];
+const protectedItems = [{ href: "/create", label: "Créer", icon: Plus, reason: "Connectez-vous pour créer" }, { href: "/messages", label: "Messages", icon: MessageCircle, reason: "Connectez-vous pour accéder à vos messages" }, { href: "/partner", label: "Partenaire", icon: BriefcaseBusiness, reason: "Connectez-vous pour accéder à votre espace partenaire" }, { href: "/passport", label: "Passport", icon: Award, reason: "Connectez-vous pour voir votre progression" }, { href: "/me", label: "Profil", icon: UserRound, reason: "Connectez-vous pour voir votre profil" }];
 
 export function PublicNavigation({ mode }: { mode: "sidebar" | "rail" | "bottom" }) {
   const pathname = usePathname(); const router = useRouter(); const protectedAction = useProtectedAction(); const { status, session } = useUserSession();

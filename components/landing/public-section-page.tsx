@@ -3,7 +3,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { LandingHeader } from "./landing-header";
 import { LandingFooter } from "./footer";
-import { LandingIntro } from "./landing-intro";
 import { SectionAnimations } from "./section-animations";
 import { usePublicLanguage } from "./public-language";
 import { publicPages, type PublicPageSlug } from "@/lib/public/pages";
@@ -20,13 +19,13 @@ import "./public-pages.css";
 
 export function PublicSectionPage({ page }: { page: PublicPageSlug }) {
   return (
-    <LandingIntro><div className="public-section-page" id="top">
+    <div className="public-section-page" id="top">
       <LandingHeader />
       <main id="main-content">
         <SectionAnimations><PublicSectionContent page={page} /></SectionAnimations>
       </main>
       <LandingFooter />
-    </div></LandingIntro>
+    </div>
   );
 }
 

@@ -34,7 +34,7 @@
 .resource-hero--illustrated { position: relative; isolation: isolate; max-width: none; padding-left: max(2rem, calc((100vw - 1136px) / 2)); padding-right: max(2rem, calc((100vw - 1136px) / 2)); margin-bottom: 3rem; color: white; overflow: hidden; }
 .resource-hero__background { position: absolute; inset: 0; z-index: -1; background: #122d30; }
 .resource-hero__background img { object-fit: cover; object-position: center 55%; }
-.resource-hero__background > div { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(9,27,30,.96), rgba(9,27,30,.82) 55%, rgba(9,27,30,.42)); }
+.resource-hero__background > div { position: absolute; inset: 0; background: rgba(9,27,30,.78); }
 .resource-hero--illustrated .resource-back, .resource-hero--illustrated .resource-eyebrow, .resource-hero--illustrated > p, .resource-hero--illustrated .resource-meta { color: #f2f6f3; }
 .resource-hero--illustrated .resource-eyebrow { color: #ffbfb6; }
 .resource-hero--illustrated .resource-meta span + span { border-color: #82918c; }

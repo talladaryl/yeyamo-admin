@@ -2,65 +2,56 @@
 
 import { usePublicLanguage } from "./public-language";
 
-import Image from "next/image";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { ChevronDown, Menu } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronDown, Download, Menu } from "lucide-react";
 import { LanguageSwitcher } from "./public-language";
-import { useState, useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { navItems } from "./data";
 import "./public-navigation.css";
+import { AnimatedLogo } from "../animated-logo";
 
-const primaryPaths = new Set(["/", "/fonctionnalites", "/destinations", "/communaute"]);
-const expandedPaths = new Set(["/solutions", "/securite", "/application", "/telechargement"]);
-const primaryItems = navItems.filter((item) => primaryPaths.has(item.href) || expandedPaths.has(item.href));
-const additionalItems = navItems.filter((item) => !primaryPaths.has(item.href));
-function subscribeHash(listener: () => void) {
-  window.addEventListener("hashchange", listener);
-  return () => window.removeEventListener("hashchange", listener);
-}
-function currentHash() { return window.location.hash; }
-
+const primaryPaths = new Set(["/fonctionnalites", "/destinations", "/communaute", "/faq"]);
+const primaryItems = navItems.filter((item) => primaryPaths.has(item.href));
 export function LandingHeader() {
   const { t, href } = usePublicLanguage();
   const pathname = usePathname();
-  const hash = useSyncExternalStore(subscribeHash, currentHash, () => "");
-  const activePath = pathname === "/" && hash.startsWith("#section-") ? `/${hash.slice(9)}` : pathname;
+  const [activeSection, setActiveSection] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const shouldReduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    if (pathname !== "/") return;
+    const sections = primaryItems
+      .map((item) => document.getElementById(`section-${item.href.slice(1)}`))
+      .filter((section): section is HTMLElement => section !== null);
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries.filter((entry) => entry.isIntersecting).sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (visible) setActiveSection(visible.target.id.replace("section-", ""));
+    }, { rootMargin: "-28% 0px -55%", threshold: [0, .2, .5, .8] });
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, [pathname]);
 
   return (
     <header className="site-header">
       <div className="site-header__inner">
         <a className="site-header__brand" href={href("/")} aria-label={t("YeYamo — Accueil")}>
-          <Image
-            src="/brand/yeyamo-logo.png"
-            alt={t("YeYamo")}
-            width={54}
-            height={54}
-            priority
-            className="site-header__brand-mark"
-          />
-          <span className="site-header__brand-name">{t("YeYamo")}</span>
+          <AnimatedLogo compact className="site-header__animated-logo" />
         </a>
 
         <nav className="site-header__nav" aria-label={t("Navigation principale")}>
-          {primaryItems.map((item) => (
-            <a key={item.label} href={href(item.href)} className={`site-header__nav-link${expandedPaths.has(item.href) ? " site-header__expanded-link" : ""}`} aria-current={activePath === item.href ? "page" : undefined}>
-              {t(item.label)}
+          {primaryItems.map((item) => {
+            const active = pathname === "/" ? activeSection === item.href.slice(1) : pathname === item.href;
+            return <a key={item.label} href={pathname === "/" ? `#section-${item.href.slice(1)}` : href(item.href)} className="site-header__nav-link" aria-current={active ? "location" : undefined} onClick={() => setActiveSection(item.href.slice(1))}>
+              {active ? <motion.span className="site-header__drop" layoutId="active-navigation-drop" transition={{ type: "spring", stiffness: 420, damping: 34 }} aria-hidden="true" /> : null}
+              <span className="site-header__nav-label">{t(item.label)}</span>
             </a>
-          ))}
-          {/* The native menu can be opened before React hydrates. */}
-          <details suppressHydrationWarning className="site-header__more" onKeyDown={(event) => {
-            if (event.key === "Escape") { event.currentTarget.open = false; event.currentTarget.querySelector("summary")?.focus(); }
-          }} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) event.currentTarget.open = false; }}>
-            <summary className="site-header__nav-link">{t("Toutes les pages")}<ChevronDown size={14} aria-hidden="true" /></summary>
-            <div className="site-header__more-links">{additionalItems.map((item) => <a key={item.href} href={href(item.href)} className={expandedPaths.has(item.href) ? "site-header__overflow-link" : undefined} aria-current={activePath === item.href ? "page" : undefined}>{t(item.label)}</a>)}</div>
-          </details>
+          })}
         </nav>
 
         <div className="site-header__actions">
           <LanguageSwitcher />
+          <a className="site-header__cta" href="#section-telechargement">{t("Télécharger l’app")}<Download size={17} aria-hidden="true" /></a>
 
           <button
             type="button"
@@ -78,24 +69,25 @@ export function LandingHeader() {
         {mobileMenuOpen ? (
           <motion.div
             className="site-header__drawer"
-            initial={shouldReduceMotion ? false : { opacity: 0, y: -18 }}
+            initial={{ opacity: 0, y: -18 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -18 }}
             transition={{ duration: 0.2 }}
           >
             <div className="site-header__drawer-links">
-              {navItems.map((item) => (
+              {primaryItems.map((item) => (
                 <a
                   key={item.label}
-                  href={href(item.href)}
+                  href={pathname === "/" ? `#section-${item.href.slice(1)}` : href(item.href)}
                   className="site-header__drawer-link"
-                  aria-current={activePath === item.href ? "page" : undefined}
+                  aria-current={(pathname === "/" ? activeSection === item.href.slice(1) : pathname === item.href) ? "location" : undefined}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {t(item.label)}
                 </a>
               ))}
             </div>
+            <a className="site-header__drawer-cta" href="#section-telechargement" onClick={() => setMobileMenuOpen(false)}>{t("Télécharger l’app")}<Download size={17} aria-hidden="true" /></a>
           </motion.div>
         ) : null}
       </AnimatePresence>

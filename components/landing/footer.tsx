@@ -1,8 +1,8 @@
 "use client";
 
 import { usePublicLanguage } from "./public-language";
-import Image from "next/image";
 import { ArrowRight } from "lucide-react";
+import { AnimatedLogo } from "../animated-logo";
 
 export function LandingFooter() {
   const { t, href } = usePublicLanguage();
@@ -11,14 +11,7 @@ export function LandingFooter() {
       <div className="site-footer__grid">
         <div className="site-footer__brand">
           <a className="site-footer__brand-link" href="#top">
-            <Image
-              src="/brand/yeyamo-logo.png"
-              alt={t("YeYamo")}
-              width={48}
-              height={48}
-              className="site-footer__brand-mark"
-            />
-            <span>{t("YeYamo")}</span>
+            <AnimatedLogo compact className="site-footer__animated-logo" />
           </a>
           <p className="site-footer__lead">
             {t("Explorer, partager et valoriser le Cameroun avec une expérience claire, humaine et immersive.")}</p>
@@ -29,9 +22,7 @@ export function LandingFooter() {
           <h3>{t("Navigation")}</h3>
           <a href={href("/fonctionnalites")}>{t("Fonctionnalités")}</a>
           <a href={href("/solutions")}>{t("Solutions")}</a>
-          <a href={href("/profils")}>{t("Rôles")}</a>
           <a href={href("/securite")}>{t("Sécurité")}</a>
-          <a href={href("/a-propos")}>{t("À propos")}</a>
           <a href={href("/documentation")}>{t("Documentation")}</a>
         </div>
 
@@ -68,7 +59,6 @@ export function LandingFooter() {
         <div className="site-footer__bottom-links">
           <a href={href("/confidentialite")}>{t("Politique de confidentialité")}</a>
           <a href={href("/securite")}>{t("Sécurité")}</a>
-          <a href={href("/a-propos")}>{t("À propos")}</a>
           <a href={href("/documentation")}>{t("Documentation")}</a>
         </div>
       </div>

@@ -18,6 +18,7 @@ export type Destination = {
   rating: string;
   image: string;
   imageAlt: string;
+  description?: string;
   focalPoint?: string;
 };
 

@@ -77,6 +77,14 @@ select {
   outline-offset: 3px;
 }
 
+.animated-logo { position: relative; display: inline-block; width: 210px; height: 84px; overflow: hidden; line-height: 0; }
+.animated-logo img { object-fit: contain; }
+.animated-logo--compact { width: 160px; height: 56px; }
+.admin-sidebar__brand-mark .animated-logo,
+.admin-login__logo .animated-logo { width: 120px; height: 52px; }
+.yy-brand .animated-logo { width: 150px; height: 54px; }
+.yy-nav--rail .yy-brand .animated-logo { width: 64px; height: 54px; }
+
 .landing-page {
   position: relative;
   overflow-x: clip;

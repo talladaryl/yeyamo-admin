@@ -29,6 +29,7 @@ function DestinationCard({ destination }: { destination: Destination }) {
       <div className="destination-card__copy">
         <h3 className="destination-card__title">{t(destination.title)}</h3>
         <p className="destination-card__region">{t(destination.region)}</p>
+        {destination.description ? <p className="destination-card__description">{t(destination.description)}</p> : null}
       </div>
     </motion.article>
   );

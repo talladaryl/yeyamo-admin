@@ -3,7 +3,7 @@
 import { usePublicLanguage } from "./public-language";
 
 import type { ReactNode } from "react";
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { SectionHeading } from "./section-heading";
 import { SectionIcon } from "./section-icon";
 import { aboutCards, documentationCards, rolesCards, securityCards } from "./data";
@@ -12,11 +12,6 @@ import { ChevronRight } from "lucide-react";
 import { createRevealVariants } from "../../lib/public/animations";
 
 const revealVariants = createRevealVariants(24);
-const fadeVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 }
-} as const;
-
 const infoSections = {
   roles: rolesCards,
   security: securityCards,
@@ -26,8 +21,7 @@ const infoSections = {
 
 export function InfoGrid({ items }: { items: InfoCard[] }) {
   const { href, t } = usePublicLanguage();
-  const shouldReduceMotion = useReducedMotion();
-  const itemVariants = shouldReduceMotion ? fadeVariants : revealVariants;
+  const itemVariants = revealVariants;
 
   return (
     <motion.div
@@ -36,7 +30,7 @@ export function InfoGrid({ items }: { items: InfoCard[] }) {
       whileInView="visible"
       custom="up"
       viewport={{ once: true, amount: 0.2 }}
-      variants={shouldReduceMotion ? fadeVariants : { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.08 } } }}
+      variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.08 } } }}
     >
       {items.map((item) => {
         const Icon = item.icon;

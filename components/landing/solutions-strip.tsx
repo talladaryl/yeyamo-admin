@@ -2,21 +2,15 @@
 
 import { usePublicLanguage } from "./public-language";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import { solutionItems } from "./data";
 import { SectionIcon } from "./section-icon";
 import { createRevealVariants } from "../../lib/public/animations";
 
 const revealVariants = createRevealVariants(24);
-const fadeVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 }
-} as const;
-
 export function SolutionsStrip() {
   const { t } = usePublicLanguage();
-  const shouldReduceMotion = useReducedMotion();
-  const itemVariants = shouldReduceMotion ? fadeVariants : revealVariants;
+  const itemVariants = revealVariants;
 
   return (
     <motion.div
@@ -26,7 +20,7 @@ export function SolutionsStrip() {
       whileInView="visible"
       custom="up"
       viewport={{ once: true, amount: 0.2 }}
-      variants={shouldReduceMotion ? fadeVariants : { hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.08 } } }}
+      variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0, transition: { staggerChildren: 0.08 } } }}
     >
       {solutionItems.map((item, index) => {
         const Icon = item.icon;

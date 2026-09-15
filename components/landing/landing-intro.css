@@ -1,7 +1,7 @@
 .landing-intro {
   position: fixed; inset: 0; z-index: 1000; display: flex; flex-direction: column;
   align-items: center; justify-content: center; min-height: 100dvh; padding: 2rem;
-  background: radial-gradient(ellipse 80% 60% at 50% 38%, #2a1a18 0%, transparent 70%), linear-gradient(180deg, #1a1414, #0c0a0a);
+  background: #0c0a0a;
   color: #f6f0ee; opacity: 1; transition: opacity 280ms ease, visibility 280ms;
 }
 .landing-intro--leaving { opacity: 0; visibility: hidden; }

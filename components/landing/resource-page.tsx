@@ -3,7 +3,6 @@ import { PublicLanguageProvider } from "./public-language";
 import { LandingHeader } from "./landing-header";
 import { LandingFooter } from "./footer";
 import { DocumentationSections } from "./documentation-sections";
-import { LandingIntro } from "./landing-intro";
 import { localizedHref } from "@/lib/public/locale";
 import { documentationContent, privacyContent, type PublicLocale } from "@/lib/public/resource-content";
 import "./resources.css";
@@ -15,7 +14,6 @@ export function ResourcePage({ kind, locale }: { kind: "privacy" | "documentatio
   const Icon = kind === "privacy" ? ShieldCheck : BookOpen;
   return (
     <PublicLanguageProvider locale={locale}>
-      <LandingIntro>
       <div className={`resource-page resource-page--${kind}`} lang={locale} id="top">
         <a className="public-skip-link" href="#resource-content">{isFrench ? "Aller au contenu" : "Skip to content"}</a>
         <LandingHeader />
@@ -43,7 +41,6 @@ export function ResourcePage({ kind, locale }: { kind: "privacy" | "documentatio
         </main>
         <LandingFooter />
       </div>
-      </LandingIntro>
     </PublicLanguageProvider>
   );
 }

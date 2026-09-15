@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
-import { LandingPage } from "@/components/landing/landing-page";
-export const metadata: Metadata = { title: "À propos | Yeyamo", description: "Découvrez la vision et l’application Yeyamo." };
-export default function AboutPage() { return <LandingPage />; }
+import { redirect } from "next/navigation";
+
+export default function AboutPage() {
+  redirect("/");
+}

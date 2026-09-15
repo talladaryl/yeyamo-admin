@@ -1,6 +1,6 @@
 .public-hero-background { position: absolute; inset: 0; z-index: -1; background: #122d30; }
 .public-hero-background img { object-fit: cover; object-position: center 55%; }
-.public-hero-background > div { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(9,27,30,.96), rgba(9,27,30,.82) 55%, rgba(9,27,30,.42)); }
+.public-hero-background > div { position: absolute; inset: 0; background: rgba(9,27,30,.78); }
 .public-hero-background--themed img { object-position: right center; }
-.public-hero-background--themed > div { background: linear-gradient(90deg, #07171ae6, #07171a88 52%, #07171a0d); }
-@media (max-width: 700px) { .public-hero-background--themed > div { background: linear-gradient(90deg, #07171aeb, #07171ab3); } }
+.public-hero-background--themed > div { background: #07171abf; }
+@media (max-width: 700px) { .public-hero-background--themed > div { background: #07171ad9; } }

@@ -49,21 +49,25 @@ describe("public navigation and languages", () => {
   it.each(["fr", "en"] as const)("renders the %s homepage with real resources and no admin entry", (locale) => {
     const page = parse(renderToStaticMarkup(<PublicLanguageProvider locale={locale}><HomeContent /></PublicLanguageProvider>));
     const heading = page.querySelector("h1")?.textContent;
-    expect(heading).toContain(locale === "en" ? "Explore Africa" : "Explorer l’Afrique");
+    expect(heading).toContain(locale === "en" ? "Explore more" : "Découvrez plus");
     expect(page.querySelector(`footer a[href="/confidentialite?lang=${locale}"]`)).not.toBeNull();
     expect(page.querySelector(`a[href="/documentation?lang=${locale}"]`)).not.toBeNull();
     expect(page.querySelector('a[href^="/admin"]')).toBeNull();
-    expect(page.querySelectorAll("main .landing-joined-section")).toHaveLength(10);
+    expect(page.querySelectorAll("main .story-section")).toHaveLength(8);
+    expect(page.querySelectorAll('a[href="#section-telechargement"]')).not.toHaveLength(0);
     expect(page.querySelectorAll("h1")).toHaveLength(1);
     expect(page.querySelectorAll(".site-header")).toHaveLength(1);
     expect(page.querySelectorAll(".site-footer")).toHaveLength(1);
+    expect(page.querySelector(".landing-intro")).toBeNull();
+    expect(page.querySelector('.site-header img[src*="yeyamo-logo.png"]')).not.toBeNull();
+    expect(page.querySelector('.site-footer img[src*="yeyamo-logo.png"]')).not.toBeNull();
     const ids = Array.from(page.querySelectorAll("[id]"), (element) => element.id);
     expect(new Set(ids).size).toBe(ids.length);
     for (const anchor of page.querySelectorAll('a[href^="#"]')) {
       expect(page.getElementById(anchor.getAttribute("href")!.slice(1))).not.toBeNull();
     }
     if (locale === "en") {
-      expect(page.body.textContent).toContain("Explore destinations");
+      expect(page.body.textContent).toContain("Download the app");
       expect(page.querySelector("#features")).not.toBeNull();
       expect(page.querySelector('a[href="#section-destinations"]')).not.toBeNull();
       expect(page.body.textContent).not.toMatch(/Télécharger|Confidentialité|Politique de confidentialité|membres|Données protégées/);

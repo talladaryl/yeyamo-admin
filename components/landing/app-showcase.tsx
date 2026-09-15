@@ -50,6 +50,7 @@ export function AppShowcaseSection() {
         <div className="app-showcase__capture">
           <Image src="/landing/config.png" alt={t("Écran de personnalisation de YeYamo")} fill sizes="(max-width: 700px) 43vw, 250px" />
         </div>
+        <div className="app-showcase__yamo" aria-hidden="true"><Image src="/mascot/yamo.png" alt="" fill sizes="180px" /></div>
       </div>
       <ul className="app-features" aria-label={t("Avantages de l'application")}>
         {appFeatures.map((item) => (

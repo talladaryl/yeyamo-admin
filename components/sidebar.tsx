@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import type { Route } from "next";
 import { usePathname } from "next/navigation";
@@ -30,6 +29,7 @@ import { adminNavigation } from "@/lib/admin-config";
 import { can } from "@/features/auth/permissions";
 import { useAdminSession } from "@/features/auth/session-context";
 import { cn } from "@/lib/utils";
+import { AnimatedLogo } from "@/components/animated-logo";
 
 const iconMap: Record<string, LucideIcon> = {
   dashboard: LayoutDashboard,
@@ -72,7 +72,7 @@ export function Sidebar({
       <aside className={cn("admin-sidebar", open && "admin-sidebar--open")}>
         <div className="admin-sidebar__brand">
           <div className="admin-sidebar__brand-mark">
-            <Image src="/brand/yeyamo-logo.png" alt="" width={44} height={44} priority />
+            <AnimatedLogo compact />
           </div>
           <div>
             <p className="admin-sidebar__title">YeYamo</p>

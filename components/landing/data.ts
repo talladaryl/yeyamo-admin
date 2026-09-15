@@ -222,6 +222,7 @@ export const destinations: Destination[] = [
     region: "Ouest",
     category: "Nature",
     rating: "4.8",
+    description: "Une chute monumentale au cœur d’un paysage façonné par la forêt et la roche.",
     image: "/destinations/chute_ekom.png",
     imageAlt: "Chutes d'Ekom Nkam"
   },
@@ -230,6 +231,7 @@ export const destinations: Destination[] = [
     region: "Sud",
     category: "Plage",
     rating: "4.6",
+    description: "L’océan, les marchés et les saveurs du Sud réunis dans une escale lumineuse.",
     image: "/destinations/kribi.png",
     imageAlt: "Plage de Kribi"
   },
@@ -238,6 +240,7 @@ export const destinations: Destination[] = [
     region: "Ouest",
     category: "Culture",
     rating: "4.7",
+    description: "Un lieu de mémoire où l’architecture raconte encore l’histoire du royaume Bamoun.",
     image: "/destinations/palais.png",
     imageAlt: "Palais Royal Bamoun"
   },
@@ -246,6 +249,7 @@ export const destinations: Destination[] = [
     region: "Sud-Ouest",
     category: "Montagne",
     rating: "4.9",
+    description: "Une ascension emblématique entre forêt tropicale, lave ancienne et grand horizon.",
     image: "/destinations/mont.png",
     imageAlt: "Mont Cameroun"
   }

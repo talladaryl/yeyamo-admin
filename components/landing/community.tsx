@@ -24,6 +24,7 @@ export function CommunitySection() {
   <section className="community-testimonials" aria-labelledby="testimonials-title">
     <SectionBadge>{t("TÉMOIGNAGES")}</SectionBadge>
     <h2 id="testimonials-title">{t("Des expériences à partager")}</h2>
+    <p className="community-testimonials__notice">{t("Paroles de membres présentées comme récits éditoriaux de la communauté YeYamo.")}</p>
     <div className="community-testimonials__grid">{communityTestimonials.map((person) => <figure key={person.name}>
       <blockquote><p>« {t(person.quote)} »</p></blockquote>
       <figcaption><Image src={person.avatar} alt="" width={48} height={48} /><span><strong>{person.name}</strong><small>{t(person.role)}</small></span></figcaption>

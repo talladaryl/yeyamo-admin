@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import HomeContent from "@/components/landing/home-content";
-import { LandingIntro } from "@/components/landing/landing-intro";
 import { PublicLanguageProvider } from "@/components/landing/public-language";
 import { getPublicLocale } from "@/lib/public/locale";
 
@@ -14,5 +13,5 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 }
 export default async function Home({ searchParams }: Props) {
   const locale = getPublicLocale((await searchParams).lang);
-  return <PublicLanguageProvider locale={locale}><LandingIntro><HomeContent /></LandingIntro></PublicLanguageProvider>;
+  return <PublicLanguageProvider locale={locale}><HomeContent /></PublicLanguageProvider>;
 }

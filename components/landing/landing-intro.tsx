@@ -6,38 +6,13 @@ import { IntroLogo } from "./intro-logo";
 import { usePublicLanguage } from "./public-language";
 import "./landing-intro.css";
 
-const SESSION_COOKIE = "yeyamo_intro_seen";
-const INTRO_EVENT = "yeyamo:intro-dismissed";
-let dismissedInMemory = false;
-
-function hasSeenCookie() { return document.cookie.split(";").some((cookie) => cookie.trim() === `${SESSION_COOKIE}=1`); }
-
-function shouldPlayIntro() {
-  if (dismissedInMemory || window.location.hash || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
-  try { return !hasSeenCookie(); } catch { return true; }
-}
-
-function subscribe(listener: () => void) {
+function subscribeMotion(listener: () => void) {
   const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
-  window.addEventListener(INTRO_EVENT, listener);
-  window.addEventListener("hashchange", listener);
   preference.addEventListener("change", listener);
-  return () => {
-    window.removeEventListener(INTRO_EVENT, listener);
-    window.removeEventListener("hashchange", listener);
-    preference.removeEventListener("change", listener);
-  };
+  return () => preference.removeEventListener("change", listener);
 }
-
-function dismissIntro() {
-  try {
-    document.cookie = `${SESSION_COOKIE}=1; Path=/; SameSite=Lax${location.protocol === "https:" ? "; Secure" : ""}`;
-    dismissedInMemory = !hasSeenCookie();
-  } catch { dismissedInMemory = true; }
-  window.dispatchEvent(new Event(INTRO_EVENT));
-}
-
-function IntroScreen({ content }: { content: React.RefObject<HTMLDivElement | null> }) {
+function prefersReducedMotion() { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
+function IntroScreen({ content, onDismiss }: { content: React.RefObject<HTMLDivElement | null>; onDismiss: () => void }) {
   const { locale } = usePublicLanguage();
   const logo = useRef<HTMLDivElement>(null);
   const skipButton = useRef<HTMLButtonElement>(null);
@@ -46,8 +21,8 @@ function IntroScreen({ content }: { content: React.RefObject<HTMLDivElement | nu
   const finish = useCallback(() => {
     if (exitTimer.current) return;
     setLeaving(true);
-    exitTimer.current = setTimeout(dismissIntro, 280);
-  }, []);
+    exitTimer.current = setTimeout(onDismiss, 280);
+  }, [onDismiss]);
 
   useEffect(() => {
     const page = content.current;
@@ -68,11 +43,15 @@ function IntroScreen({ content }: { content: React.RefObject<HTMLDivElement | nu
       for (const group of groups) {
         logo.current?.querySelectorAll<SVGPathElement>(group.selector).forEach((path, index) => {
           const length = path.getTotalLength();
-          const animation = path.animate([
+          const keyframes = group.selector === "#g-icon path" ? [
             { strokeDasharray: `${length}`, strokeDashoffset: `${length}`, fillOpacity: 0, strokeOpacity: 1, offset: 0 },
             { strokeDasharray: `${length}`, strokeDashoffset: "0", fillOpacity: 0, strokeOpacity: 1, offset: .65 },
             { strokeDasharray: `${length}`, strokeDashoffset: "0", fillOpacity: 1, strokeOpacity: 0, offset: 1 }
-          ], { duration: 1000, delay: group.delay + index * group.stagger, easing: "cubic-bezier(.4,.1,.2,1)", fill: "both" });
+          ] : [
+            { fillOpacity: 0, strokeOpacity: 0 },
+            { fillOpacity: 1, strokeOpacity: 0 }
+          ];
+          const animation = path.animate(keyframes, { duration: 1000, delay: group.delay + index * group.stagger, easing: "cubic-bezier(.4,.1,.2,1)", fill: "both" });
           animations.push(animation);
           completed.push(animation.finished.catch(() => animation));
         });
@@ -101,6 +80,9 @@ function IntroScreen({ content }: { content: React.RefObject<HTMLDivElement | nu
       window.removeEventListener("keydown", onKeyDown);
       document.body.style.overflow = previousOverflow;
       if (page) { page.removeAttribute("inert"); page.removeAttribute("aria-hidden"); }
+      const hash = window.location.hash.slice(1);
+      const target = hash ? document.getElementById(decodeURIComponent(hash)) : null;
+      if (target) target.scrollIntoView({ block: "start", behavior: "instant" });
       if (previousFocus instanceof HTMLElement && previousFocus !== document.body) previousFocus.focus({ preventScroll: true });
       else page?.querySelector<HTMLElement>("h1")?.focus({ preventScroll: true });
     };
@@ -118,13 +100,15 @@ function IntroScreen({ content }: { content: React.RefObject<HTMLDivElement | nu
   );
 }
 
-/** Only wrap the homepage: legal pages and documentation stay directly accessible. */
-export function LandingIntro({ children, initiallySeen = false }: { children: ReactNode; initiallySeen?: boolean }) {
-  const active = useSyncExternalStore(subscribe, shouldPlayIntro, () => !initiallySeen);
+/** Replay on each public page mount, without replaying for in-page navigation. */
+export function LandingIntro({ children }: { children: ReactNode }) {
+  const reducedMotion = useSyncExternalStore(subscribeMotion, prefersReducedMotion, () => false);
+  const [dismissed, setDismissed] = useState(false);
+  const dismiss = useCallback(() => setDismissed(true), []);
   const content = useRef<HTMLDivElement>(null);
   return <>
     <div ref={content}>{children}</div>
-    {active && <IntroScreen content={content} />}
+    {!dismissed && !reducedMotion && <IntroScreen content={content} onDismiss={dismiss} />}
     <noscript><style>{".landing-intro{display:none!important}"}</style></noscript>
   </>;
 }

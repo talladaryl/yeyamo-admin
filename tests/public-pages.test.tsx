@@ -53,10 +53,19 @@ describe("public navigation and languages", () => {
     expect(page.querySelector(`footer a[href="/confidentialite?lang=${locale}"]`)).not.toBeNull();
     expect(page.querySelector(`a[href="/documentation?lang=${locale}"]`)).not.toBeNull();
     expect(page.querySelector('a[href^="/admin"]')).toBeNull();
+    expect(page.querySelectorAll("main .landing-joined-section")).toHaveLength(10);
+    expect(page.querySelectorAll("h1")).toHaveLength(1);
+    expect(page.querySelectorAll(".site-header")).toHaveLength(1);
+    expect(page.querySelectorAll(".site-footer")).toHaveLength(1);
+    const ids = Array.from(page.querySelectorAll("[id]"), (element) => element.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const anchor of page.querySelectorAll('a[href^="#"]')) {
+      expect(page.getElementById(anchor.getAttribute("href")!.slice(1))).not.toBeNull();
+    }
     if (locale === "en") {
       expect(page.body.textContent).toContain("Explore destinations");
-      expect(page.querySelector("#features")).toBeNull();
-      expect(page.querySelector('a[href="/destinations?lang=en"]')).not.toBeNull();
+      expect(page.querySelector("#features")).not.toBeNull();
+      expect(page.querySelector('a[href="#section-destinations"]')).not.toBeNull();
       expect(page.body.textContent).not.toMatch(/Télécharger|Confidentialité|Politique de confidentialité|membres|Données protégées/);
     }
   });
@@ -67,7 +76,7 @@ describe("public navigation and languages", () => {
       expect(page.querySelector("h1")?.textContent).toBe(publicPages[slug][locale]);
       expect(page.querySelector(".public-section-related")).toBeNull();
       expect(page.body.textContent).not.toMatch(/Retour à l’accueil|Back to home/);
-      expect(page.querySelector(".public-hero-background img")?.getAttribute("src")).toBe(`/backgrounds/${slug}.svg`);
+      expect(page.querySelector(".public-section-heading .public-hero-background")).toBeNull();
       expect(page.querySelector('a[href^="/admin"]')).toBeNull();
       expect(page.querySelector('a[href^="https://example.com"]')).toBeNull();
       for (const link of page.querySelectorAll<HTMLAnchorElement>('a[href^="/"]')) {

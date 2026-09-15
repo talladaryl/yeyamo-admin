@@ -3,7 +3,7 @@ import { PublicLanguageProvider } from "./public-language";
 import { LandingHeader } from "./landing-header";
 import { LandingFooter } from "./footer";
 import { DocumentationSections } from "./documentation-sections";
-import { PublicHeroBackground } from "./public-hero-background";
+import { LandingIntro } from "./landing-intro";
 import { localizedHref } from "@/lib/public/locale";
 import { documentationContent, privacyContent, type PublicLocale } from "@/lib/public/resource-content";
 import "./resources.css";
@@ -15,12 +15,12 @@ export function ResourcePage({ kind, locale }: { kind: "privacy" | "documentatio
   const Icon = kind === "privacy" ? ShieldCheck : BookOpen;
   return (
     <PublicLanguageProvider locale={locale}>
+      <LandingIntro>
       <div className={`resource-page resource-page--${kind}`} lang={locale} id="top">
         <a className="public-skip-link" href="#resource-content">{isFrench ? "Aller au contenu" : "Skip to content"}</a>
         <LandingHeader />
         <main id="resource-content">
-          <section className="resource-hero resource-hero--illustrated">
-            <PublicHeroBackground page={kind === "privacy" ? "confidentialite" : "documentation"} />
+          <section className="resource-hero">
             <div className="resource-eyebrow"><Icon size={18} aria-hidden="true" />{isFrench ? "LES RESSOURCES YEYAMO" : "YEYAMO RESOURCES"}</div>
             <h1>{content.title}</h1><p>{content.intro}</p>
             <div className="resource-meta"><span>{isFrench ? "Mis à jour le 13 septembre 2026" : "Updated September 13, 2026"}</span><span>{content.sections.length} {isFrench ? "rubriques" : "sections"}</span></div>
@@ -43,6 +43,7 @@ export function ResourcePage({ kind, locale }: { kind: "privacy" | "documentatio
         </main>
         <LandingFooter />
       </div>
+      </LandingIntro>
     </PublicLanguageProvider>
   );
 }

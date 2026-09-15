@@ -34,16 +34,16 @@ import type {
 export const navItems: NavItem[] = [
   { label: "Accueil", href: "/" },
   { label: "Fonctionnalités", href: "/fonctionnalites" },
-  { label: "Destinations", href: "/destinations" },
-  { label: "Communauté", href: "/communaute" },
-  { label: "À propos", href: "/a-propos" },
-  { label: "Documentation", href: "/documentation" },
-  { label: "Télécharger", href: "/telechargement" },
   { label: "Solutions", href: "/solutions" },
   { label: "Rôles", href: "/profils" },
+  { label: "Destinations", href: "/destinations" },
+  { label: "Communauté", href: "/communaute" },
   { label: "Sécurité", href: "/securite" },
   { label: "Application", href: "/application" },
+  { label: "À propos", href: "/a-propos" },
   { label: "FAQ", href: "/faq" },
+  { label: "Télécharger", href: "/telechargement" },
+  { label: "Documentation", href: "/documentation" },
   { label: "Politique de confidentialité", href: "/confidentialite" }
 ];
 

@@ -8,7 +8,7 @@
 
 ## Accueil et pages de rubriques
 
-L’accueil contient le hero et le pied de page. Chaque rubrique dispose de sa page : `/fonctionnalites`, `/solutions`, `/profils`, `/destinations`, `/communaute`, `/securite`, `/application`, `/a-propos`, `/faq` et `/telechargement`. Les pages sont déclarées dans `lib/public/pages.ts` et rendues par `app/[publicPage]/page.tsx`. Une adresse inconnue retourne une page 404.
+L’accueil réunit le hero et les dix rubriques de présentation, avec une seule navbar et un seul footer. Chaque rubrique conserve son en-tête illustré et ses composants grâce à `PublicSectionContent`. Les liens de l’accueil ciblent `#section-<rubrique>` sans recharger la page. Documentation et confidentialité restent séparées. Les anciennes adresses des rubriques restent accessibles : `/fonctionnalites`, `/solutions`, `/profils`, `/destinations`, `/communaute`, `/securite`, `/application`, `/a-propos`, `/faq` et `/telechargement`. Elles utilisent les mêmes composants. Une adresse inconnue retourne une page 404.
 
 L’accueil conserve son fond et sa mascotte animée. Chaque rubrique a une illustration SVG thématique distincte dans `public/backgrounds`, choisie par `components/landing/public-hero-background.tsx`. Le script `node scripts/generate-public-backgrounds.mjs` régénère ces illustrations. La navigation commune remplace les liens de retour et les pastilles de bas de page. Documentation et confidentialité partagent les accordéons, avec ouverture depuis le sommaire et commandes pour tout déplier/replier.
 

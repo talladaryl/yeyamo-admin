@@ -13,8 +13,8 @@ beforeEach(() => {
 });
 afterEach(() => { vi.useRealTimers(); vi.unstubAllGlobals(); vi.restoreAllMocks(); document.body.style.overflow = ""; });
 
-describe("homepage introduction", () => {
-  it("lets users skip immediately and does not replay during the session", () => {
+describe("public page introduction", () => {
+  it("lets users skip immediately and replays on the next page mount", () => {
     const { unmount } = render(<Page />);
     expect(screen.getByRole("dialog")).toBeInTheDocument();
     expect(document.body.style.overflow).toBe("hidden");
@@ -25,9 +25,9 @@ describe("homepage introduction", () => {
     expect(screen.getByRole("heading", { name: "Home" })).toHaveFocus();
     unmount();
     render(<Page />);
-    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
   });
-  it("honours reduced motion and direct section links", () => {
+  it("honours reduced motion and plays for direct page links with a hash", () => {
     vi.stubGlobal("matchMedia", vi.fn(() => ({ matches: true, addEventListener: vi.fn(), removeEventListener: vi.fn() })));
     const { unmount } = render(<Page />);
     expect(screen.queryByRole("dialog")).toBeNull();
@@ -35,7 +35,7 @@ describe("homepage introduction", () => {
     vi.stubGlobal("matchMedia", vi.fn(() => ({ matches: false, addEventListener: vi.fn(), removeEventListener: vi.fn() })));
     history.replaceState(null, "", "/#top");
     render(<Page />);
-    expect(screen.queryByRole("dialog")).toBeNull();
+    expect(screen.getByRole("dialog")).toBeInTheDocument();
   });
   it("unblocks the page even when animations never complete", () => {
     Object.defineProperty(SVGElement.prototype, "getTotalLength", { configurable: true, value: () => 100 });

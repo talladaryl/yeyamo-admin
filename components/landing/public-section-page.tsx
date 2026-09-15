@@ -3,7 +3,8 @@
 import { ArrowUpRight } from "lucide-react";
 import { LandingHeader } from "./landing-header";
 import { LandingFooter } from "./footer";
-import { PublicHeroBackground } from "./public-hero-background";
+import { LandingIntro } from "./landing-intro";
+import { SectionAnimations } from "./section-animations";
 import { usePublicLanguage } from "./public-language";
 import { publicPages, type PublicPageSlug } from "@/lib/public/pages";
 import { FeaturesSection } from "./features";
@@ -18,15 +19,23 @@ import { FaqSection } from "./faq";
 import "./public-pages.css";
 
 export function PublicSectionPage({ page }: { page: PublicPageSlug }) {
-  const { locale, t, href } = usePublicLanguage();
   return (
-    <div className="public-section-page" id="top">
+    <LandingIntro><div className="public-section-page" id="top">
       <LandingHeader />
       <main id="main-content">
+        <SectionAnimations><PublicSectionContent page={page} /></SectionAnimations>
+      </main>
+      <LandingFooter />
+    </div></LandingIntro>
+  );
+}
+
+export function PublicSectionContent({ page, embedded = false }: { page: PublicPageSlug; embedded?: boolean }) {
+  const { locale, t, href } = usePublicLanguage();
+  const Heading = embedded ? "h2" : "h1";
+  return <>
         <header className="public-section-heading">
-          <PublicHeroBackground page={page} />
-          <p>YEYAMO / {publicPages[page][locale]}</p>
-          <h1>{publicPages[page][locale]}</h1>
+          <Heading id={`section-${page}-title`}>{publicPages[page][locale]}</Heading>
         </header>
         <div className="public-section-body">
           {page === "fonctionnalites" && <FeaturesSection showSolutions={false} />}
@@ -40,8 +49,5 @@ export function PublicSectionPage({ page }: { page: PublicPageSlug }) {
           {page === "faq" && <FaqSection />}
           {page === "telechargement" && <AppDownloadSection headline={t("Retrouvez YeYamo sur mobile")} subheadline={t("Explorez les possibilités de l’application et retrouvez ici ses liens de téléchargement officiels.")} appStoreUrl={APP_STORE_URL} playStoreUrl={PLAY_STORE_URL} />}
         </div>
-      </main>
-      <LandingFooter />
-    </div>
-  );
+  </>;
 }

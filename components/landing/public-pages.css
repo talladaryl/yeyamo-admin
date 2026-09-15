@@ -24,11 +24,34 @@
 @keyframes hero-mascot-shadow { 0%, 100% { transform: scaleX(1); opacity: .6; } 50% { transform: scaleX(.8); opacity: .35; } }
 @media (prefers-reduced-motion: reduce) { .hero-mascot__image, .hero-mascot__shadow { animation: none; } }
 .home-hero__visual-caption { position: absolute; bottom: -1rem; width: 100%; text-align: center; color: #e3e9e5; font-size: .75rem; }
+.home-hero__capture { position: absolute; width: 44%; height: 85%; filter: drop-shadow(0 18px 22px #0005); }
+.home-hero__capture img { object-fit: contain; }
+.home-hero__capture--first { left: 0; top: 1%; rotate: -7deg; }
+.home-hero__capture--second { left: 27%; top: 10%; rotate: 5deg; z-index: 1; }
+.home-hero__mascot { position: absolute; right: -5%; bottom: 0; width: 47%; height: 60%; z-index: 2; }
+.home-hero__mascot .hero-mascot__image { padding: 0; }
+.app-showcase .app-showcase__captures { display: flex; align-items: center; justify-content: center; gap: .5rem; min-height: 0; padding: 1rem 0 2rem; background: transparent; }
+.app-showcase__capture { position: relative; width: min(48%, 250px); aspect-ratio: .6; filter: drop-shadow(0 15px 18px #172b3222); }
+.app-showcase__capture img { object-fit: contain; }
+.app-showcase__capture:first-child { rotate: -4deg; }
+.app-showcase__capture:last-child { rotate: 4deg; translate: 0 20px; }
+@media (prefers-reduced-motion: no-preference) {
+  .home-hero__capture { animation: capture-float 6s ease-in-out infinite; }
+  .home-hero__capture--second { animation-delay: -3s; }
+  .app-showcase__capture { transition: scale .3s ease; }
+  .app-showcase__capture:hover { scale: 1.035; }
+  @keyframes capture-float { 0%, 100% { translate: 0 0; } 50% { translate: 0 -9px; } }
+}
 .public-home > .site-footer, .public-section-page > .site-footer { margin-top: 0; }
 .public-section-page main { min-height: calc(100svh - 85px); }
-.public-section-heading { position: relative; isolation: isolate; overflow: hidden; margin: 0 0 2rem; padding: 2.5rem max(2rem, calc((100vw - 1176px) / 2)) 3rem; color: white; }
+.public-section-heading { position: relative; margin: 0 0 1rem; padding: 4rem 1.5rem 1.5rem; color: #172b32; text-align: center; }
+.public-section-heading::after { content: ""; display: block; width: 64px; height: 4px; margin: 1.4rem auto 0; border-radius: 4px; background: var(--primary); }
 .public-section-heading > p { margin: 2rem 0 .8rem; color: #ffbfb6; font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; }
-.public-section-heading h1 { margin: 0; font: 600 clamp(2rem, 4vw, 3.2rem)/1.12 var(--font-heading), sans-serif; letter-spacing: -.035em; }
+.public-section-heading h1, .public-section-heading h2 { margin: 0; font: 600 clamp(2rem, 4vw, 3.2rem)/1.12 var(--font-heading), sans-serif; letter-spacing: -.035em; }
+.landing-joined-section { scroll-margin-top: 85px; padding-bottom: 2rem; }
+.landing-joined-section:nth-child(odd) { background-color: #ffffff; }
+.landing-joined-section:nth-child(even) { background-color: #f1f2f4; }
+.public-home main [id] { scroll-margin-top: 100px; }
 .public-section-body { max-width: 1240px; margin: auto; padding: 1rem 2rem 2rem; }
 .public-section-body > .content-shell, .public-section-body > .destinations, .public-section-body > .community, .public-section-body > .app-showcase, .public-section-body > .faq, .public-section-body > .app-download { margin: 0; padding: 0; max-width: none; }
 .public-section-body .content-shell__features { border-radius: 20px; border: 1px solid #eee3df; }
@@ -45,7 +68,7 @@
 .community-editorial__cards h3 { margin: 0 0 .5rem; font-size: 1rem; }
 .community-editorial__cards p { margin: 0; color: #5b6474; font-size: .85rem; line-height: 1.7; }
 .store-download { display: grid; gap: .55rem; align-content: start; }
-.app-download .download-store-button { display: inline-flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: .8rem; min-width: 198px; min-height: 66px; padding: .7rem 1.15rem; background: #101010; color: white; border: 1px solid #787878; border-radius: 12px; text-align: left; text-decoration: none; font-family: inherit; }
+.store-download .download-store-button { display: inline-flex; flex-direction: row; align-items: center; justify-content: flex-start; gap: .8rem; min-width: 198px; min-height: 66px; padding: .7rem 1.15rem; background: #101010; color: white; border: 1px solid #787878; border-radius: 12px; text-align: left; text-decoration: none; font-family: inherit; }
 .download-store-button svg { width: 30px; height: 36px; flex-shrink: 0; }
 .download-store-button span { display: grid; gap: .1rem; }
 .download-store-button small { font-size: .65rem; line-height: 1.4; }

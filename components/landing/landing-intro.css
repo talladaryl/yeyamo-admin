@@ -9,9 +9,10 @@
 .landing-intro__logo { width: min(76vw, 420px); filter: drop-shadow(0 30px 60px #d11c1926); }
 .landing-intro__logo svg { width: 100%; height: auto; display: block; overflow: visible; }
 .landing-intro__logo path { fill-opacity: 0; stroke-opacity: 0; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
-.landing-intro__logo .p-icon-dark, .landing-intro__logo .p-text-dark { stroke: #d11c19; fill: #d11c19; }
-.landing-intro__logo .p-icon-light, .landing-intro__logo .p-text-light { stroke: #e07369; fill: #e07369; }
-.landing-intro__logo .p-tagline { stroke: #b8aaa5; fill: #b8aaa5; }
+.landing-intro__logo .p-icon-dark { stroke: #d11c19; fill: #d11c19; }
+.landing-intro__logo .p-icon-light { stroke: #e07369; fill: #e07369; }
+.landing-intro__logo #g-text path { stroke: none; fill: #e50914; }
+.landing-intro__logo #g-tagline path { stroke: none; fill: #ffffff; }
 .landing-intro__logo ellipse { fill: #dcdcdc; opacity: .1; }
 .landing-intro__bottom { position: absolute; bottom: max(2rem, env(safe-area-inset-bottom)); display: grid; justify-items: center; gap: .8rem; }
 .landing-intro__bottom p { font-size: .9rem; color: #c9b9b4; margin: 0; }

@@ -1,5 +1,10 @@
 /** French source copy is the key; proper names and numeric values remain unchanged. */
 export const english: Record<string, string> = {
+  "Aperçu de l’application et mascotte Yamo": "App preview and Yamo mascot",
+  "Écran Découverte de YeYamo": "YeYamo Discover screen",
+  "Écran Explorer de YeYamo": "YeYamo Explore screen",
+  "Écran Événements de YeYamo": "YeYamo Events screen",
+  "Écran de personnalisation de YeYamo": "YeYamo personalisation screen",
   "de l’Afrique": "of Africa",
   "Protection du compte": "Account protection",
   "Choisissez un mot de passe unique et ne partagez jamais vos identifiants ni vos codes de connexion.": "Choose a unique password and never share your credentials or sign-in codes.",

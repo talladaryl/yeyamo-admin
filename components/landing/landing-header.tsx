@@ -6,19 +6,26 @@ import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ChevronDown, Menu } from "lucide-react";
 import { LanguageSwitcher } from "./public-language";
-import { useState } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { usePathname } from "next/navigation";
 import { navItems } from "./data";
 import "./public-navigation.css";
 
-const primaryPaths = new Set(["/", "/destinations", "/communaute", "/documentation"]);
-const expandedPaths = new Set(["/fonctionnalites", "/securite", "/application", "/telechargement"]);
+const primaryPaths = new Set(["/", "/fonctionnalites", "/destinations", "/communaute"]);
+const expandedPaths = new Set(["/solutions", "/securite", "/application", "/telechargement"]);
 const primaryItems = navItems.filter((item) => primaryPaths.has(item.href) || expandedPaths.has(item.href));
 const additionalItems = navItems.filter((item) => !primaryPaths.has(item.href));
+function subscribeHash(listener: () => void) {
+  window.addEventListener("hashchange", listener);
+  return () => window.removeEventListener("hashchange", listener);
+}
+function currentHash() { return window.location.hash; }
 
 export function LandingHeader() {
   const { t, href } = usePublicLanguage();
   const pathname = usePathname();
+  const hash = useSyncExternalStore(subscribeHash, currentHash, () => "");
+  const activePath = pathname === "/" && hash.startsWith("#section-") ? `/${hash.slice(9)}` : pathname;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const shouldReduceMotion = useReducedMotion();
 
@@ -39,7 +46,7 @@ export function LandingHeader() {
 
         <nav className="site-header__nav" aria-label={t("Navigation principale")}>
           {primaryItems.map((item) => (
-            <a key={item.label} href={href(item.href)} className={`site-header__nav-link${expandedPaths.has(item.href) ? " site-header__expanded-link" : ""}`} aria-current={pathname === item.href ? "page" : undefined}>
+            <a key={item.label} href={href(item.href)} className={`site-header__nav-link${expandedPaths.has(item.href) ? " site-header__expanded-link" : ""}`} aria-current={activePath === item.href ? "page" : undefined}>
               {t(item.label)}
             </a>
           ))}
@@ -48,7 +55,7 @@ export function LandingHeader() {
             if (event.key === "Escape") { event.currentTarget.open = false; event.currentTarget.querySelector("summary")?.focus(); }
           }} onBlur={(event) => { if (!event.currentTarget.contains(event.relatedTarget as Node | null)) event.currentTarget.open = false; }}>
             <summary className="site-header__nav-link">{t("Toutes les pages")}<ChevronDown size={14} aria-hidden="true" /></summary>
-            <div className="site-header__more-links">{additionalItems.map((item) => <a key={item.href} href={href(item.href)} className={expandedPaths.has(item.href) ? "site-header__overflow-link" : undefined} aria-current={pathname === item.href ? "page" : undefined}>{t(item.label)}</a>)}</div>
+            <div className="site-header__more-links">{additionalItems.map((item) => <a key={item.href} href={href(item.href)} className={expandedPaths.has(item.href) ? "site-header__overflow-link" : undefined} aria-current={activePath === item.href ? "page" : undefined}>{t(item.label)}</a>)}</div>
           </details>
         </nav>
 
@@ -82,7 +89,7 @@ export function LandingHeader() {
                   key={item.label}
                   href={href(item.href)}
                   className="site-header__drawer-link"
-                  aria-current={pathname === item.href ? "page" : undefined}
+                  aria-current={activePath === item.href ? "page" : undefined}
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {t(item.label)}

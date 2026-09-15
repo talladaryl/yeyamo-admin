@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { cookies } from "next/headers";
 import HomeContent from "@/components/landing/home-content";
 import { LandingIntro } from "@/components/landing/landing-intro";
 import { PublicLanguageProvider } from "@/components/landing/public-language";
@@ -15,6 +14,5 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 }
 export default async function Home({ searchParams }: Props) {
   const locale = getPublicLocale((await searchParams).lang);
-  const initiallySeen = (await cookies()).get("yeyamo_intro_seen")?.value === "1";
-  return <PublicLanguageProvider locale={locale}><LandingIntro initiallySeen={initiallySeen}><HomeContent /></LandingIntro></PublicLanguageProvider>;
+  return <PublicLanguageProvider locale={locale}><LandingIntro><HomeContent /></LandingIntro></PublicLanguageProvider>;
 }

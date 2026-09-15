@@ -20,7 +20,7 @@ export function isPublishedStoreUrl(value: string) {
   try { const url = new URL(value); return url.protocol === "https:" && (url.hostname === "apps.apple.com" || url.hostname === "play.google.com"); } catch { return false; }
 }
 
-function StoreBadge({ url, store }: { url: string; store: "apple" | "google" }) {
+export function StoreBadge({ url, store }: { url: string; store: "apple" | "google" }) {
   const { t } = usePublicLanguage();
   const label = store === "apple" ? "Télécharger sur l'App Store" : "Télécharger sur Google Play";
   const published = isPublishedStoreUrl(url);
@@ -31,8 +31,7 @@ function StoreBadge({ url, store }: { url: string; store: "apple" | "google" }) 
   </>;
   return <div className="store-download">
     {published ? <a className="download-store-button" href={url} aria-label={t(label)}>{content}</a>
-      : <button className="download-store-button" type="button" disabled aria-label={`${t(label)} — ${t("Lien officiel bientôt disponible")}`} aria-describedby={`store-${store}-status`}>{content}</button>}
-    {!published && <small className="store-download__status" id={`store-${store}-status`}>{t("Lien officiel bientôt disponible")}</small>}
+      : <button className="download-store-button" type="button" disabled aria-label={t(label)}>{content}</button>}
   </div>;
 }
 

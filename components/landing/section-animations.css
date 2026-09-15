@@ -1,0 +1,13 @@
+.section-animation-root { display: contents; }
+@media (prefers-reduced-motion: no-preference) {
+  .section-entered { animation: section-arrive .75s cubic-bezier(.2,.7,.2,1) var(--entrance-delay, 0ms) both; }
+  .public-section-heading.section-entered::after { animation: title-underline .8s ease .2s both; }
+  .section-animation-root :is(.secondary-card, .community-testimonials figure, .community-editorial__cards article, .faq-item, .app-download__point) { transition: translate .25s ease, box-shadow .25s ease, border-color .25s ease; }
+  .section-animation-root :is(.secondary-card, .community-testimonials figure, .community-editorial__cards article, .faq-item, .app-download__point):hover { translate: 0 -5px; border-color: #efb9bc; box-shadow: 0 16px 35px #172b3210; }
+  .section-animation-root .secondary-card__icon { transition: rotate .3s ease, scale .3s ease; }
+  .section-animation-root .secondary-card:hover .secondary-card__icon { rotate: -8deg; scale: 1.1; }
+  .section-animation-root .community-testimonials figcaption img { transition: scale .3s ease; }
+  .section-animation-root .community-testimonials figure:hover img { scale: 1.12; }
+  @keyframes section-arrive { from { opacity: 0; translate: 0 25px; } to { opacity: 1; translate: 0 0; } }
+  @keyframes title-underline { from { scale: 0 1; opacity: 0; } to { scale: 1 1; opacity: 1; } }
+}

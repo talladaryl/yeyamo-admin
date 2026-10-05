@@ -40,7 +40,7 @@ export function notificationHref(notification: AdminNotification) {
 export function AdminNotificationBell() {
   const [open, setOpen] = useState(false);
   const count = useQuery({ queryKey: [...queryKeys.notifications.all, "count"], queryFn: notificationsApi.count, refetchInterval: 60000 });
-  return <div className="admin-notification-bell"><button type="button" className="admin-topbar__icon-button" aria-label={`Notifications, ${count.data?.count ?? 0} non lues`} aria-expanded={open} onClick={() => setOpen((value) => !value)}><Bell size={18}/>{count.data?.count ? <span>{count.data.count > 99 ? "99+" : count.data.count}</span> : null}</button>{open ? <AdminNotificationDropdown onClose={() => setOpen(false)}/> : null}</div>;
+  return <div className="admin-notification-bell"><button type="button" className="admin-topbar__icon-button" aria-label={`Notifications, ${count.data?.count ?? 0} non lues`} aria-expanded={open} onClick={() => setOpen((value) => !value)}><Bell size={18}/>{count.data?.count ? <span className="admin-notification-bell__count">{count.data.count > 99 ? "99+" : count.data.count}</span> : null}</button>{open ? <AdminNotificationDropdown onClose={() => setOpen(false)}/> : null}</div>;
 }
 
 export function AdminNotificationDropdown({ onClose }: { onClose: () => void }) {

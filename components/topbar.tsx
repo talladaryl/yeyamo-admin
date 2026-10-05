@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { CalendarDays, ChevronDown, LayoutDashboard, LogOut, Menu, Search, UserCircle2 } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { getModuleByHref } from "@/lib/admin-config";
 import { useAdminSession } from "@/features/auth/session-context";
 import { AdminNotificationBell } from "@/features/notifications/components/admin-notifications";
@@ -29,18 +29,11 @@ function getTopbarCopy(pathname: string) {
   };
 }
 
-export function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
+export function Topbar({ onMenuClick, onLogout }: { onMenuClick: () => void; onLogout: () => void }) {
   const pathname = usePathname();
-  const router = useRouter();
   const { session } = useAdminSession();
   const copy = getTopbarCopy(pathname);
   const displayName = [session?.firstName, session?.lastName].filter(Boolean).join(" ") || session?.email || "Administrateur";
-
-  async function logout() {
-    await fetch("/api/auth/logout", { method: "POST" });
-    router.replace("/admin/login");
-    router.refresh();
-  }
 
   return (
     <header className="admin-topbar">
@@ -78,7 +71,7 @@ export function Topbar({ onMenuClick }: { onMenuClick: () => void }) {
           <span className="admin-topbar__user-name">{displayName}</span>
           <ChevronDown size={16} aria-hidden="true" />
         </Link>
-        <button type="button" className="admin-topbar__icon-button" aria-label="Se déconnecter" onClick={logout}>
+        <button type="button" className="admin-topbar__icon-button" aria-label="Se déconnecter" onClick={onLogout}>
           <LogOut size={18} />
         </button>
       </div>

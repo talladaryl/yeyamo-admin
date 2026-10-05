@@ -1,4 +1,232 @@
-"use client";/* eslint-disable react-hooks/set-state-in-effect */import Link from"next/link";import{useEffect,useState}from"react";import{useMutation,useQuery,useQueryClient}from"@tanstack/react-query";import{useRouter}from"next/navigation";import{financeApi}from"@/features/finance/api/finance-api";import{promotionSchema}from"@/features/finance/schemas/finance-schema";import type{Promotion,PromotionInput}from"@/features/finance/types/finance";import{queryKeys}from"@/lib/query/query-keys";import{useAdminToast}from"@/components/admin/ui/admin-toast";import{AdminDataTable,type AdminColumn}from"@/components/admin/ui/admin-data-table";import{AdminConfirmDialog,AdminErrorState,AdminPageHeader,AdminSkeleton,AdminStatusBadge}from"@/components/admin/ui/admin-foundation";
-const initial={partnerId:"",code:"",name:"",description:"",discountType:"PERCENTAGE",discountValue:0,maximumDiscount:0,minimumOrderAmount:0,usageLimit:1,usageLimitPerUser:1,startsAt:"",endsAt:"",applicableProductTypes:["BOOKING_ORDER"],applicableEntityIds:[]} as PromotionInput;
-export function PromotionsPage(){const query=useQuery({queryKey:queryKeys.commerce.lists(),queryFn:()=>financeApi.promotions()});const columns:AdminColumn<Promotion>[]=[{id:"code",header:"Code",cell:p=>p.code},{id:"name",header:"Nom",cell:p=>p.name},{id:"partner",header:"Partenaire",cell:p=>p.partnerId??"Plateforme"},{id:"discount",header:"Remise",cell:p=>`${p.discountValue} · ${p.discountType}`},{id:"usage",header:"Utilisation",cell:p=>`${p.usageCount}/${p.usageLimit??"∞"}`},{id:"period",header:"Période",cell:p=>`${new Date(p.startsAt).toLocaleDateString("fr-FR")} → ${new Date(p.endsAt).toLocaleDateString("fr-FR")}`},{id:"status",header:"Statut",cell:p=><AdminStatusBadge status={p.status}/>}];return <div className="admin-feature"><AdminPageHeader title="Promotions" actions={<Link className="admin-button" href="/admin/promotions/new">Créer</Link>}/><section className="admin-section-card"><AdminDataTable rows={query.data?.content??[]} columns={columns} rowKey={p=>p.id} loading={query.isLoading} error={query.error??undefined} actions={p=><Link href={`/admin/promotions/${p.id}`}>Gérer</Link>}/></section></div>}
-export function PromotionEditor({id}:{id?:string}){const router=useRouter();const client=useQueryClient();const{toast}=useAdminToast();const query=useQuery({queryKey:queryKeys.commerce.detail(id??"new"),queryFn:()=>financeApi.promotion(id!),enabled:Boolean(id)});const[values,setValues]=useState<PromotionInput>(initial);const[confirm,setConfirm]=useState(false);useEffect(()=>{if(query.data)setValues({...query.data,partnerId:query.data.partnerId??undefined,description:query.data.description??undefined,maximumDiscount:query.data.maximumDiscount??undefined,usageLimit:query.data.usageLimit??undefined,usageLimitPerUser:query.data.usageLimitPerUser??undefined,applicableProductTypes:(query.data.applicableProductTypes?query.data.applicableProductTypes.split(","):[]) as PromotionInput["applicableProductTypes"],applicableEntityIds:query.data.applicableEntityIds?query.data.applicableEntityIds.split(","):[]})},[query.data]);const mutation=useMutation({mutationFn:()=>{const body=promotionSchema.parse(values);return financeApi.savePromotion({...body,startsAt:new Date(body.startsAt).toISOString(),endsAt:new Date(body.endsAt).toISOString()},id)},onSuccess:async p=>{await client.invalidateQueries({queryKey:queryKeys.commerce.all});toast({title:"Promotion enregistrée",tone:"success"});router.push(`/admin/promotions/${p.id}` as never)}});const disable=useMutation({mutationFn:()=>financeApi.disablePromotion(id!),onSuccess:()=>client.invalidateQueries({queryKey:queryKeys.commerce.all})});if(query.isLoading)return <AdminSkeleton/>;return <div className="admin-feature"><AdminPageHeader title={id?"Modifier la promotion":"Nouvelle promotion"} actions={id?<button onClick={()=>setConfirm(true)}>Désactiver</button>:undefined}/>{query.error?<AdminErrorState error={query.error}/>:null}<form className="admin-form" onSubmit={e=>{e.preventDefault();mutation.mutate()}}>{(["partnerId","code","name","description"]as const).map(k=><label key={k}>{k}<input value={values[k]??""} onChange={e=>setValues({...values,[k]:e.target.value})}/></label>)}<label>Type<select value={values.discountType} onChange={e=>setValues({...values,discountType:e.target.value as PromotionInput["discountType"]})}>{["PERCENTAGE","FIXED_AMOUNT","FREE_SERVICE_FEE"].map(x=><option key={x}>{x}</option>)}</select></label>{(["discountValue","maximumDiscount","minimumOrderAmount","usageLimit","usageLimitPerUser"]as const).map(k=><label key={k}>{k}<input type="number" value={values[k]??""} onChange={e=>setValues({...values,[k]:Number(e.target.value)})}/></label>)}<label>Début<input type="datetime-local" value={values.startsAt.slice(0,16)} onChange={e=>setValues({...values,startsAt:e.target.value})}/></label><label>Fin<input type="datetime-local" value={values.endsAt.slice(0,16)} onChange={e=>setValues({...values,endsAt:e.target.value})}/></label><button className="admin-button" disabled={mutation.isPending}>Enregistrer</button>{mutation.error?<AdminErrorState error={mutation.error}/>:null}</form><AdminConfirmDialog open={confirm} title="Désactiver la promotion" message="La promotion ne sera plus applicable." destructive busy={disable.isPending} onClose={()=>setConfirm(false)} onConfirm={()=>disable.mutate()}/></div>}
+"use client";
+/* eslint-disable react-hooks/set-state-in-effect */ import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { financeApi } from "@/features/finance/api/finance-api";
+import { promotionSchema } from "@/features/finance/schemas/finance-schema";
+import type {
+  Promotion,
+  PromotionInput,
+} from "@/features/finance/types/finance";
+import { queryKeys } from "@/lib/query/query-keys";
+import { useAdminToast } from "@/components/admin/ui/admin-toast";
+import {
+  AdminDataTable,
+  type AdminColumn,
+} from "@/components/admin/ui/admin-data-table";
+import { AdminRadioGroup } from "@/components/admin/ui/admin-choice-group";
+import {
+  AdminConfirmDialog,
+  AdminErrorState,
+  AdminPageHeader,
+  AdminSkeleton,
+  AdminStatusBadge,
+} from "@/components/admin/ui/admin-foundation";
+const initial = {
+  partnerId: "",
+  code: "",
+  name: "",
+  description: "",
+  discountType: "PERCENTAGE",
+  discountValue: 0,
+  maximumDiscount: 0,
+  minimumOrderAmount: 0,
+  usageLimit: 1,
+  usageLimitPerUser: 1,
+  startsAt: "",
+  endsAt: "",
+  applicableProductTypes: ["BOOKING_ORDER"],
+  applicableEntityIds: [],
+} as PromotionInput;
+export function PromotionsPage() {
+  const query = useQuery({
+    queryKey: queryKeys.commerce.lists(),
+    queryFn: () => financeApi.promotions(),
+  });
+  const columns: AdminColumn<Promotion>[] = [
+    { id: "code", header: "Code", cell: (p) => p.code },
+    { id: "name", header: "Nom", cell: (p) => p.name },
+    {
+      id: "partner",
+      header: "Partenaire",
+      cell: (p) => p.partnerId ?? "Plateforme",
+    },
+    {
+      id: "discount",
+      header: "Remise",
+      cell: (p) => `${p.discountValue} · ${p.discountType}`,
+    },
+    {
+      id: "usage",
+      header: "Utilisation",
+      cell: (p) => `${p.usageCount}/${p.usageLimit ?? "∞"}`,
+    },
+    {
+      id: "period",
+      header: "Période",
+      cell: (p) =>
+        `${new Date(p.startsAt).toLocaleDateString("fr-FR")} → ${new Date(p.endsAt).toLocaleDateString("fr-FR")}`,
+    },
+    {
+      id: "status",
+      header: "Statut",
+      cell: (p) => <AdminStatusBadge status={p.status} />,
+    },
+  ];
+  return (
+    <div className="admin-feature">
+      <AdminPageHeader
+        title="Promotions"
+        actions={
+          <Link className="admin-button" href="/admin/promotions/new">
+            Créer
+          </Link>
+        }
+      />
+      <section className="admin-section-card">
+        <AdminDataTable
+          rows={query.data?.content ?? []}
+          columns={columns}
+          rowKey={(p) => p.id}
+          loading={query.isLoading}
+          error={query.error ?? undefined}
+          actions={(p) => <Link href={`/admin/promotions/${p.id}`}>Gérer</Link>}
+        />
+      </section>
+    </div>
+  );
+}
+export function PromotionEditor({ id }: { id?: string }) {
+  const router = useRouter();
+  const client = useQueryClient();
+  const { toast } = useAdminToast();
+  const query = useQuery({
+    queryKey: queryKeys.commerce.detail(id ?? "new"),
+    queryFn: () => financeApi.promotion(id!),
+    enabled: Boolean(id),
+  });
+  const [values, setValues] = useState<PromotionInput>(initial);
+  const [confirm, setConfirm] = useState(false);
+  useEffect(() => {
+    if (query.data)
+      setValues({
+        ...query.data,
+        partnerId: query.data.partnerId ?? undefined,
+        description: query.data.description ?? undefined,
+        maximumDiscount: query.data.maximumDiscount ?? undefined,
+        usageLimit: query.data.usageLimit ?? undefined,
+        usageLimitPerUser: query.data.usageLimitPerUser ?? undefined,
+        applicableProductTypes: (query.data.applicableProductTypes
+          ? query.data.applicableProductTypes.split(",")
+          : []) as PromotionInput["applicableProductTypes"],
+        applicableEntityIds: query.data.applicableEntityIds
+          ? query.data.applicableEntityIds.split(",")
+          : [],
+      });
+  }, [query.data]);
+  const mutation = useMutation({
+    mutationFn: () => {
+      const body = promotionSchema.parse(values);
+      return financeApi.savePromotion(
+        {
+          ...body,
+          startsAt: new Date(body.startsAt).toISOString(),
+          endsAt: new Date(body.endsAt).toISOString(),
+        },
+        id,
+      );
+    },
+    onSuccess: async (p) => {
+      await client.invalidateQueries({ queryKey: queryKeys.commerce.all });
+      toast({ title: "Promotion enregistrée", tone: "success" });
+      router.push(`/admin/promotions/${p.id}` as never);
+    },
+  });
+  const disable = useMutation({
+    mutationFn: () => financeApi.disablePromotion(id!),
+    onSuccess: () =>
+      client.invalidateQueries({ queryKey: queryKeys.commerce.all }),
+  });
+  if (query.isLoading) return <AdminSkeleton />;
+  return (
+    <div className="admin-feature">
+      <AdminPageHeader
+        title={id ? "Modifier la promotion" : "Nouvelle promotion"}
+        actions={
+          id ? (
+            <button onClick={() => setConfirm(true)}>Désactiver</button>
+          ) : undefined
+        }
+      />
+      {query.error ? <AdminErrorState error={query.error} /> : null}
+      <form
+        className="admin-form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          mutation.mutate();
+        }}
+      >
+        {(["partnerId", "code", "name", "description"] as const).map((k) => (
+          <label key={k}>
+            {k}
+            <input
+              value={values[k] ?? ""}
+              onChange={(e) => setValues({ ...values, [k]: e.target.value })}
+            />
+          </label>
+        ))}
+        <AdminRadioGroup legend="Type" value={values.discountType} options={[{ value: "PERCENTAGE", label: "Pourcentage" }, { value: "FIXED_AMOUNT", label: "Montant fixe" }, { value: "FREE_SERVICE_FEE", label: "Frais de service offerts" }]} onChange={(discountType: PromotionInput["discountType"]) => setValues({ ...values, discountType })}/>
+        {(
+          [
+            "discountValue",
+            "maximumDiscount",
+            "minimumOrderAmount",
+            "usageLimit",
+            "usageLimitPerUser",
+          ] as const
+        ).map((k) => (
+          <label key={k}>
+            {k}
+            <input
+              type="number"
+              value={values[k] ?? ""}
+              onChange={(e) =>
+                setValues({ ...values, [k]: Number(e.target.value) })
+              }
+            />
+          </label>
+        ))}
+        <label>
+          Début
+          <input
+            type="datetime-local"
+            value={values.startsAt.slice(0, 16)}
+            onChange={(e) => setValues({ ...values, startsAt: e.target.value })}
+          />
+        </label>
+        <label>
+          Fin
+          <input
+            type="datetime-local"
+            value={values.endsAt.slice(0, 16)}
+            onChange={(e) => setValues({ ...values, endsAt: e.target.value })}
+          />
+        </label>
+        <button className="admin-button" disabled={mutation.isPending}>
+          Enregistrer
+        </button>
+        {mutation.error ? <AdminErrorState error={mutation.error} /> : null}
+      </form>
+      <AdminConfirmDialog
+        open={confirm}
+        title="Désactiver la promotion"
+        message="La promotion ne sera plus applicable."
+        destructive
+        busy={disable.isPending}
+        onClose={() => setConfirm(false)}
+        onConfirm={() => disable.mutate()}
+      />
+    </div>
+  );
+}

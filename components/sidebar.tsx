@@ -3,7 +3,7 @@
 import Link from "next/link";
 import type { Route } from "next";
 import { usePathname } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Building2, CalendarDays, ChevronDown, ClipboardList, FolderOpen, FolderUp,
   LayoutDashboard, LogOut, Mail, MessageSquareText, PanelLeftClose, PanelLeftOpen,
@@ -39,10 +39,21 @@ export function Sidebar({ open, collapsed, onClose, onToggleCollapsed, onLogout 
   const { session } = useAdminSession();
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
-  const visibleModules = adminNavigation.filter((module) => module.showInSidebar !== false && can(session, module));
+  const visibleModules = useMemo(() => adminNavigation.filter((module) => module.showInSidebar !== false && can(session, module)), [session]);
   const displayName = [session?.firstName, session?.lastName].filter(Boolean).join(" ") || session?.email || "Administrateur";
   const initials = displayName.split(/\s+/).map((part) => part[0]).join("").slice(0, 2).toUpperCase();
-  const { dashboard, groups, ungrouped } = groupVisibleAdminModules(visibleModules);
+  const { dashboard, groups, ungrouped } = useMemo(() => groupVisibleAdminModules(visibleModules), [visibleModules]);
+  const allGroups = useMemo(() => ungrouped.length ? [...groups, { title: "Autres", modules: ungrouped }] : groups, [groups, ungrouped]);
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => Object.fromEntries(
+    allGroups.map((group) => [group.title, group.modules.some((module) => pathname === module.href || pathname.startsWith(module.href + "/"))]),
+  ));
+
+  useEffect(() => {
+    const activeGroup = allGroups.find((group) => group.modules.some((module) => pathname === module.href || pathname.startsWith(module.href + "/")));
+    if (!activeGroup) return;
+    const frame = requestAnimationFrame(() => setOpenGroups((current) => current[activeGroup.title] ? current : { ...current, [activeGroup.title]: true }));
+    return () => cancelAnimationFrame(frame);
+  }, [allGroups, pathname]);
 
   useEffect(() => {
     function closeProfileMenu(event: MouseEvent | KeyboardEvent) {
@@ -75,8 +86,7 @@ export function Sidebar({ open, collapsed, onClose, onToggleCollapsed, onLogout 
 
       <nav className="admin-sidebar__nav" aria-label="Navigation administrateur">
         {dashboard ? <SidebarItem module={dashboard} pathname={pathname} collapsed={collapsed} onSelect={onClose} /> : null}
-        {groups.map((group) => <SidebarGroup key={group.title} title={group.title} modules={group.modules} pathname={pathname} collapsed={collapsed} onSelect={onClose} />)}
-        {ungrouped.length ? <SidebarGroup title="Autres" modules={ungrouped} pathname={pathname} collapsed={collapsed} onSelect={onClose} /> : null}
+        {allGroups.map((group) => <SidebarGroup key={group.title} title={group.title} modules={group.modules} pathname={pathname} collapsed={collapsed} open={collapsed || Boolean(openGroups[group.title])} onToggle={() => setOpenGroups((current) => ({ ...current, [group.title]: !current[group.title] }))} onSelect={onClose} />)}
       </nav>
 
       <div className="admin-sidebar__profile-wrap" ref={profileRef}>
@@ -98,10 +108,10 @@ export function Sidebar({ open, collapsed, onClose, onToggleCollapsed, onLogout 
   </>;
 }
 
-function SidebarGroup({ title, modules, pathname, collapsed, onSelect }: { title: string; modules: AdminModule[]; pathname: string; collapsed: boolean; onSelect: () => void }) {
+function SidebarGroup({ title, modules, pathname, collapsed, open, onToggle, onSelect }: { title: string; modules: AdminModule[]; pathname: string; collapsed: boolean; open: boolean; onToggle: () => void; onSelect: () => void }) {
   return <section className="admin-sidebar__group" aria-label={title}>
-    <p className="admin-sidebar__group-title">{title}</p>
-    <div className="admin-sidebar__group-items">{modules.map((module) => <SidebarItem key={module.href} module={module} pathname={pathname} collapsed={collapsed} onSelect={onSelect} />)}</div>
+    {!collapsed ? <button type="button" className="admin-sidebar__group-title" onClick={onToggle} aria-expanded={open} aria-controls={`admin-sidebar-group-${title.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`}><span>{title}</span><ChevronDown size={15} aria-hidden="true" className={cn(open && "is-open")} /></button> : null}
+    {open ? <div id={`admin-sidebar-group-${title.replace(/[^a-z0-9]+/gi, "-").toLowerCase()}`} className="admin-sidebar__group-items">{modules.map((module) => <SidebarItem key={module.href} module={module} pathname={pathname} collapsed={collapsed} onSelect={onSelect} />)}</div> : null}
   </section>;
 }
 

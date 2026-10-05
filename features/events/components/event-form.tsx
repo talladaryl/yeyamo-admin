@@ -1,6 +1,160 @@
 "use client";
 /* eslint-disable react-hooks/set-state-in-effect */
-import { useEffect, useState } from "react"; import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"; import { useRouter } from "next/navigation";
-import { eventsApi } from "@/features/events/api/events-api"; import { eventSchema, type EventFormValues } from "@/features/events/schemas/event-schema"; import { queryKeys } from "@/lib/query/query-keys"; import { useAdminToast } from "@/components/admin/ui/admin-toast"; import { AdminErrorState, AdminPageHeader, AdminSkeleton } from "@/components/admin/ui/admin-foundation";
-const local=(value?:string)=>value?new Date(value).toISOString().slice(0,16):"";
-export function EventForm({id}:{id?:string}){const router=useRouter();const client=useQueryClient();const{toast}=useAdminToast();const detail=useQuery({queryKey:queryKeys.events.detail(id??"new"),queryFn:()=>eventsApi.detail(id!),enabled:Boolean(id)});const[values,setValues]=useState<EventFormValues>({placeId:"",title:"",description:"",startAt:"",endAt:"",capacity:1,status:"PENDING"});const[error,setError]=useState("");useEffect(()=>{if(detail.data)setValues({placeId:detail.data.placeId,title:detail.data.title,description:detail.data.description??"",startAt:local(detail.data.startAt),endAt:local(detail.data.endAt),capacity:detail.data.capacity,status:detail.data.status})},[detail.data]);const mutation=useMutation({mutationFn:async()=>{const parsed=eventSchema.safeParse(values);if(!parsed.success)throw new Error(parsed.error.issues[0]?.message??"Formulaire invalide");const normalized={...parsed.data,startAt:new Date(parsed.data.startAt).toISOString(),endAt:new Date(parsed.data.endAt).toISOString()};return id?eventsApi.update(id,{title:normalized.title,description:normalized.description,startAt:normalized.startAt,endAt:normalized.endAt,capacity:normalized.capacity}):eventsApi.create(normalized)},onSuccess:async(event)=>{await client.invalidateQueries({queryKey:queryKeys.events.all});toast({title:id?"Événement modifié":"Événement créé",tone:"success"});router.push(`/admin/events/${event.id}` as never)},onError:(caught)=>setError(caught instanceof Error?caught.message:"Enregistrement impossible")});if(detail.isLoading)return <AdminSkeleton/>;return <div className="admin-feature"><AdminPageHeader title={id?"Modifier l’événement":"Nouvel événement"} description="Le contrat event-service accepte un lieu, les dates, la capacité et le statut initial."/>{detail.error?<AdminErrorState error={detail.error}/>:null}{error?<AdminErrorState error={error}/>:null}<form className="admin-form" onSubmit={(e)=>{e.preventDefault();mutation.mutate()}}><label>UUID du lieu<input value={values.placeId} disabled={Boolean(id)} onChange={(e)=>setValues({...values,placeId:e.target.value})}/></label><label>Nom<input value={values.title} onChange={(e)=>setValues({...values,title:e.target.value})}/></label><label>Description<textarea rows={6} value={values.description} onChange={(e)=>setValues({...values,description:e.target.value})}/></label><label>Début<input type="datetime-local" value={values.startAt} onChange={(e)=>setValues({...values,startAt:e.target.value})}/></label><label>Fin<input type="datetime-local" value={values.endAt} onChange={(e)=>setValues({...values,endAt:e.target.value})}/></label><label>Capacité<input type="number" min={1} value={values.capacity} onChange={(e)=>setValues({...values,capacity:e.target.value})}/></label>{!id?<label>Statut initial<select value={values.status} onChange={(e)=>setValues({...values,status:e.target.value as EventFormValues["status"]})}>{["PENDING","PUBLISHED","CANCELLED","COMPLETED"].map(x=><option key={x}>{x}</option>)}</select></label>:null}<button className="admin-button" disabled={mutation.isPending}>{mutation.isPending?"Enregistrement…":"Enregistrer"}</button></form></div>}
+import { useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { eventsApi } from "@/features/events/api/events-api";
+import {
+  eventSchema,
+  type EventFormValues,
+} from "@/features/events/schemas/event-schema";
+import { queryKeys } from "@/lib/query/query-keys";
+import { useAdminToast } from "@/components/admin/ui/admin-toast";
+import {
+  AdminErrorState,
+  AdminPageHeader,
+  AdminSkeleton,
+} from "@/components/admin/ui/admin-foundation";
+import { AdminRadioGroup } from "@/components/admin/ui/admin-choice-group";
+const local = (value?: string) =>
+  value ? new Date(value).toISOString().slice(0, 16) : "";
+export function EventForm({ id }: { id?: string }) {
+  const router = useRouter();
+  const client = useQueryClient();
+  const { toast } = useAdminToast();
+  const detail = useQuery({
+    queryKey: queryKeys.events.detail(id ?? "new"),
+    queryFn: () => eventsApi.detail(id!),
+    enabled: Boolean(id),
+  });
+  const [values, setValues] = useState<EventFormValues>({
+    placeId: "",
+    title: "",
+    description: "",
+    startAt: "",
+    endAt: "",
+    capacity: 1,
+    status: "PENDING",
+  });
+  const [error, setError] = useState("");
+  useEffect(() => {
+    if (detail.data)
+      setValues({
+        placeId: detail.data.placeId,
+        title: detail.data.title,
+        description: detail.data.description ?? "",
+        startAt: local(detail.data.startAt),
+        endAt: local(detail.data.endAt),
+        capacity: detail.data.capacity,
+        status: detail.data.status,
+      });
+  }, [detail.data]);
+  const mutation = useMutation({
+    mutationFn: async () => {
+      const parsed = eventSchema.safeParse(values);
+      if (!parsed.success)
+        throw new Error(
+          parsed.error.issues[0]?.message ?? "Formulaire invalide",
+        );
+      const normalized = {
+        ...parsed.data,
+        startAt: new Date(parsed.data.startAt).toISOString(),
+        endAt: new Date(parsed.data.endAt).toISOString(),
+      };
+      return id
+        ? eventsApi.update(id, {
+            title: normalized.title,
+            description: normalized.description,
+            startAt: normalized.startAt,
+            endAt: normalized.endAt,
+            capacity: normalized.capacity,
+          })
+        : eventsApi.create(normalized);
+    },
+    onSuccess: async (event) => {
+      await client.invalidateQueries({ queryKey: queryKeys.events.all });
+      toast({
+        title: id ? "Événement modifié" : "Événement créé",
+        tone: "success",
+      });
+      router.push(`/admin/events/${event.id}` as never);
+    },
+    onError: (caught) =>
+      setError(
+        caught instanceof Error ? caught.message : "Enregistrement impossible",
+      ),
+  });
+  if (detail.isLoading) return <AdminSkeleton />;
+  return (
+    <div className="admin-feature">
+      <AdminPageHeader
+        title={id ? "Modifier l’événement" : "Nouvel événement"}
+        description="Le contrat event-service accepte un lieu, les dates, la capacité et le statut initial."
+      />
+      {detail.error ? <AdminErrorState error={detail.error} /> : null}
+      {error ? <AdminErrorState error={error} /> : null}
+      <form
+        className="admin-form"
+        onSubmit={(e) => {
+          e.preventDefault();
+          mutation.mutate();
+        }}
+      >
+        <label>
+          UUID du lieu
+          <input
+            value={values.placeId}
+            disabled={Boolean(id)}
+            onChange={(e) => setValues({ ...values, placeId: e.target.value })}
+          />
+        </label>
+        <label>
+          Nom
+          <input
+            value={values.title}
+            onChange={(e) => setValues({ ...values, title: e.target.value })}
+          />
+        </label>
+        <label>
+          Description
+          <textarea
+            rows={6}
+            value={values.description}
+            onChange={(e) =>
+              setValues({ ...values, description: e.target.value })
+            }
+          />
+        </label>
+        <label>
+          Début
+          <input
+            type="datetime-local"
+            value={values.startAt}
+            onChange={(e) => setValues({ ...values, startAt: e.target.value })}
+          />
+        </label>
+        <label>
+          Fin
+          <input
+            type="datetime-local"
+            value={values.endAt}
+            onChange={(e) => setValues({ ...values, endAt: e.target.value })}
+          />
+        </label>
+        <label>
+          Capacité
+          <input
+            type="number"
+            min={1}
+            value={values.capacity}
+            onChange={(e) => setValues({ ...values, capacity: e.target.value })}
+          />
+        </label>
+        {!id ? <AdminRadioGroup<NonNullable<EventFormValues["status"]>> legend="Statut initial" value={values.status ?? "PENDING"} options={[{ value: "PENDING", label: "En attente" }, { value: "PUBLISHED", label: "Publié" }, { value: "CANCELLED", label: "Annulé" }, { value: "COMPLETED", label: "Terminé" }]} onChange={(status) => setValues({ ...values, status })}/> : null}
+        <button className="admin-button" disabled={mutation.isPending}>
+          {mutation.isPending ? "Enregistrement…" : "Enregistrer"}
+        </button>
+      </form>
+    </div>
+  );
+}
